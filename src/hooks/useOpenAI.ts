@@ -21,7 +21,9 @@ const useOpenAI = (): UseOpenAIBriefingReturn => {
     setResult(null);
 
     const openai = new OpenAI({
-      apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+      apiKey:
+        process.env.REACT_APP_OPENAI_API_KEY ||
+        "sk-svcacct-wP5x_jaYNSEzg9bGfMnHrkXQCLg1FdQPRgwav9hq8la7UGu88x_ifg-eqXvwHI5zRVj7NvNpcTSsKPT3BlbkFJo_MTsPk17hdU_NOB4embPKuz-9L0aFn9_ZKaGJQhOq8qrRTX0X-DDX-RJTwIzWprnCRCluIdnXhvMA",
       dangerouslyAllowBrowser: true,
     });
 

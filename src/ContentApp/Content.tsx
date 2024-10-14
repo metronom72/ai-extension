@@ -5,7 +5,6 @@ import InitialIcon from "./InitialIcon";
 import useOpenAIQuery from "../hooks/useOpenAI";
 import Summary from "./Summary";
 import CloseIcon from "@mui/icons-material/Close";
-import { useSemanticCore } from "hooks/useSematicCore";
 
 const Content = () => {
   const {
@@ -65,13 +64,10 @@ const Content = () => {
       setClosed(true);
     }
   }, [summary, cancelRequest, setClosed]);
-  const semanticCoreObj = useSemanticCore(document.body.innerText);
 
   if (closed) {
     return null;
   }
-
-  console.log(semanticCoreObj);
 
   return (
     <MUIWrapper>
