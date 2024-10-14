@@ -14,7 +14,7 @@ const Summary = ({ summary }: { summary: Record<string, string> }) => {
       <CardOverflow>
         <AspectRatio ratio="2">
           <img
-            src={summary.preview}
+            src={summary.image}
             loading="lazy"
             alt="summary preview"
             style={{
@@ -28,7 +28,7 @@ const Summary = ({ summary }: { summary: Record<string, string> }) => {
         </AspectRatio>
       </CardOverflow>
       <CardContent>
-        <Typography level="title-lg">{summary.summaryTitle}</Typography>
+        <Typography level="title-lg">{summary.title}</Typography>
         <Typography level="body-sm">{summary.summary}</Typography>
         <Typography level="body-md">
           <Chip>{summary.category}</Chip>

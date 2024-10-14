@@ -2,9 +2,10 @@ import React, { memo, useCallback, useState } from "react";
 import MUIWrapper from "components/v1/MUIWrapper";
 import { IconButton, Stack } from "@mui/joy";
 import InitialIcon from "./InitialIcon";
-import useOpenAIQuery from "../hooks/useOpenAI";
+import useOpenAIQuery from "hooks/useOpenAI";
 import Summary from "./Summary";
 import CloseIcon from "@mui/icons-material/Close";
+import { usePageMetadata } from "../hooks/usePageMetadata";
 
 const Content = () => {
   const {
@@ -48,9 +49,8 @@ const Content = () => {
   );
 
   const [prompt, _] = useState<string>(
-    `Summarize following html, provide category and summarize title (JSON format): ${extractTextAndImages(document.body)}. 
-    Retrieve preview url from page content, use logo as fallback.
-    In JSON format {summary: <summary>, category: <category>, preview: <preview>, summaryTitle: <summaryTitle>}`,
+    `Summarize following html andprovide category (JSON format): ${extractTextAndImages(document.body)}. 
+    In JSON format {summary: <summary>, category: <category>}`,
   );
 
   const handleFetchSummary = useCallback(() => {
@@ -64,6 +64,7 @@ const Content = () => {
       setClosed(true);
     }
   }, [summary, cancelRequest, setClosed]);
+  const pageMetadata = usePageMetadata();
 
   if (closed) {
     return null;
@@ -79,7 +80,7 @@ const Content = () => {
         sx={{ position: "relative" }}
       >
         {summary ? (
-          <Summary summary={summary} />
+          <Summary summary={{ ...pageMetadata, ...summary }} />
         ) : (
           <InitialIcon onClick={handleFetchSummary} loading={loading} />
         )}
