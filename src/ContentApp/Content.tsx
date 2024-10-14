@@ -6,6 +6,7 @@ import useOpenAIQuery from "hooks/useOpenAI";
 import Summary from "./Summary";
 import CloseIcon from "@mui/icons-material/Close";
 import { usePageMetadata } from "../hooks/usePageMetadata";
+import { LLMProvider } from "../providers/LLMProvider";
 
 const Content = () => {
   const {
@@ -71,28 +72,30 @@ const Content = () => {
   }
 
   return (
-    <MUIWrapper>
-      <Stack
-        direction="row"
-        alignItems="flex-start"
-        mr={2}
-        mt={2}
-        sx={{ position: "relative" }}
-      >
-        {summary ? (
-          <Summary summary={{ ...pageMetadata, ...summary }} />
-        ) : (
-          <InitialIcon onClick={handleFetchSummary} loading={loading} />
-        )}
-        <IconButton
-          sx={{ borderRadius: "50%" }}
-          size="sm"
-          onClick={closeCallback}
+    <LLMProvider>
+      <MUIWrapper>
+        <Stack
+          direction="row"
+          alignItems="flex-start"
+          mr={2}
+          mt={2}
+          sx={{ position: "relative" }}
         >
-          <CloseIcon />
-        </IconButton>
-      </Stack>
-    </MUIWrapper>
+          {summary ? (
+            <Summary summary={{ ...pageMetadata, ...summary }} />
+          ) : (
+            <InitialIcon onClick={handleFetchSummary} loading={loading} />
+          )}
+          <IconButton
+            sx={{ borderRadius: "50%" }}
+            size="sm"
+            onClick={closeCallback}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Stack>
+      </MUIWrapper>
+    </LLMProvider>
   );
 };
 
