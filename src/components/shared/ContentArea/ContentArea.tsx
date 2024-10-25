@@ -21,16 +21,16 @@ const ContentArea: React.FC = () => {
       </Typography>
 
       <Box sx={{ marginTop: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
+        <AppButton startDecorator={<Summarize />}>Summarize Page</AppButton>
         <AppButton
           startDecorator={
             <GradientIcon>
-              <Summarize />
+              <Chat />
             </GradientIcon>
           }
         >
-          Summarize Page
+          New Chat
         </AppButton>
-        <AppButton startDecorator={<Chat />}>New Chat</AppButton>
         <AppButton startDecorator={<GroupWork />}>Relations</AppButton>
         <AppButton startDecorator={<Timer />}>AI Timers</AppButton>
         <AppButton startDecorator={<DateRange />}>AI Daily Planning</AppButton>
