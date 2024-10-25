@@ -1,6 +1,8 @@
 import React, { memo } from "react";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import "@fontsource/inter";
+import theme from "components/theme";
+import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
 
 interface MUIWrapperProps {
   children: JSX.Element | null;
@@ -8,10 +10,12 @@ interface MUIWrapperProps {
 
 const MUIWrapper = ({ children }: MUIWrapperProps) => {
   return (
-    <>
-      <CssBaseline />
-      {children}
-    </>
+    <ThemeProvider theme={theme}>
+      <JoyCssVarsProvider>
+        <CssBaseline />
+        {children}
+      </JoyCssVarsProvider>
+    </ThemeProvider>
   );
 };
 

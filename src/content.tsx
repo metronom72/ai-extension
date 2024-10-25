@@ -3,15 +3,27 @@ import { createRoot } from "react-dom/client";
 import ContentApp from "./ContentApp";
 
 const appContainer = document.createElement("div");
-appContainer.id = "briefcat-extension-root";
 
-appContainer.style.position = "fixed";
+function setMaxWidth() {
+  const maxWidth = `${window.innerWidth - 600}px`;
+  appContainer.id = "briefcat-extension-root";
 
-appContainer.style.top = "00px";
+  appContainer.style.position = "fixed";
 
-appContainer.style.right = "00px";
+  appContainer.style.top = "0px";
 
-appContainer.style.zIndex = "999999999";
+  appContainer.style.right = "0px";
+
+  appContainer.style.zIndex = "999999999";
+
+  document.documentElement.style.maxWidth = maxWidth;
+}
+
+// Set the initial max-width on page load
+setMaxWidth();
+
+// Update max-width on window resize
+window.addEventListener("resize", setMaxWidth);
 
 document.body.appendChild(appContainer);
 
