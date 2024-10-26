@@ -39,9 +39,11 @@ const ContentForm: React.FC = () => {
               sx={{ width: "100%", paddingTop: 2, paddingBottom: 2 }}
               maxRows={6}
             />
-            <IconButton size="sm">
-              <AttachFileOutlined />
-            </IconButton>
+            <Tooltip title="Attach file">
+              <IconButton size="sm">
+                <AttachFileOutlined />
+              </IconButton>
+            </Tooltip>
             <IconButton size="sm">
               <GradientIcon>
                 <SendIcon />

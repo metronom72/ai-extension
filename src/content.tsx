@@ -14,7 +14,7 @@ function setMaxWidth() {
 
   appContainer.style.right = "0px";
 
-  appContainer.style.zIndex = "99999";
+  appContainer.style.zIndex = "1000";
 
   document.documentElement.style.maxWidth = maxWidth;
 }

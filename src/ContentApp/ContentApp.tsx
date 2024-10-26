@@ -4,6 +4,7 @@ import ContentArea from "components/shared/ContentArea";
 import { Stack } from "@mui/joy";
 import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
+import ContentAppSidebar from "components/shared/ContentAppSidebar";
 
 const ContentApp = () => {
   return (
@@ -24,7 +25,7 @@ const ContentApp = () => {
           <ContentArea />
           <ContentForm />
         </Stack>
-        {/*<Sidebar />*/}
+        <ContentAppSidebar />
       </Stack>
     </MUIWrapper>
   );
