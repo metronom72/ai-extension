@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
@@ -13,6 +12,7 @@ setup_logging()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting up...")
+    print(f"Server running on {settings.HOST}:{settings.PORT}")
     yield
     print("Shutting down...")
 
@@ -39,4 +39,8 @@ add_routes(
 )
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="0.0.0.0", port=settings.PORT, reload=True)
+    import uvicorn
+
+    uvicorn.run(app,
+                host=settings.HOST,
+                port=settings.PORT)
