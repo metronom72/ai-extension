@@ -15,4 +15,6 @@ pytest==7.4.0
 pytest-asyncio==0.21.0
 black==23.3.0
 flake8==6.1.0
-
+langchain-core~=0.3.13
+langchain_nvidia_ai_endpoints
+langserve
