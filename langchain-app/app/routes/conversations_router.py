@@ -1,5 +1,3 @@
-# api_router.py
-
 from typing import List, Dict
 
 import requests
@@ -7,7 +5,6 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 
-# Define the Pydantic models
 class Query(BaseModel):
     prompt: str
     model: str = "llama2"
@@ -18,10 +15,8 @@ class Conversation(BaseModel):
     messages: List[Dict[str, str]] = Field(default_factory=list)
 
 
-# Initialize the router
 conversations_router = APIRouter()
 
-# In-memory storage for conversations
 conversations: Dict[str, Conversation] = {}
 
 

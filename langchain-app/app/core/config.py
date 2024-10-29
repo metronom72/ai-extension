@@ -1,6 +1,6 @@
 import dotenv
 from pydantic import Field
-from typing import List
+from typing import List, Optional
 
 from pydantic_settings import BaseSettings
 
@@ -16,10 +16,10 @@ class Settings(BaseSettings):
 
     ALLOWED_ORIGINS: List[str] = Field(default_factory=lambda: ["*"])
 
-    DATABASE_URL: str
-    LANGCHAIN_API_KEY: str
-    LANGCHAIN_MODEL_NAME: str = "gpt-3.5-turbo"
-    NVIDIA_API_KEY: str
+    DATABASE_URL: Optional[str]
+    LANGCHAIN_API_KEY: Optional[str]
+    LANGCHAIN_MODEL_NAME: Optional[str] = "gpt-3.5-turbo"
+    NVIDIA_API_KEY: Optional[str]
 
     class Config:
         env_file = ".env"
