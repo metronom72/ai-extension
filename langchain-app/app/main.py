@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
 
-from app.core.config import settings
-from app.core.logging import setup_logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from strawberry.fastapi import GraphQLRouter
 
-from app.routes.conversations_router import conversations_router
+from app.core.config import settings
+from app.core.logging import setup_logging
+from app.graphql.schema import schema
 
 setup_logging()
 
@@ -25,6 +26,10 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+graphql_app = GraphQLRouter(schema)
+
+app.include_router(graphql_app, prefix="/graphql")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
@@ -32,8 +37,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.include_router(conversations_router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn
