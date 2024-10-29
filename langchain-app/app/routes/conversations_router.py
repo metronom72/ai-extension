@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 import requests
 from fastapi import APIRouter, HTTPException
@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 class Query(BaseModel):
     prompt: str
     model: str = "llama2"
+    format: Optional[str] = None
 
 
 class Conversation(BaseModel):
@@ -25,7 +26,8 @@ async def generate_text(query: Query):
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
-            json={"model": query.model, "prompt": query.prompt}
+            json={"model": query.model, "prompt": query.prompt,
+                  "stream": False, "format": query.format}
         )
         response.raise_for_status()
         return {"generated_text": response.json()["response"]}
@@ -75,7 +77,9 @@ async def add_message(conv_id: str, query: Query):
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
-            json={"model": query.model, "prompt": query.prompt}
+            json={"model": query.model, "prompt": query.prompt,
+                  "stream": False, "format": query.format},
+            timeout=10
         )
         response.raise_for_status()
         generated_text = response.json()["response"]
