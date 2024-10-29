@@ -74,12 +74,16 @@ async def add_message(conv_id: str, query: Query):
     conversation = conversations[conv_id]
     conversation.messages.append({"role": "user", "content": query.prompt})
 
+    # Build a context prompt from the previous messages
+    context_prompt = "\n".join(
+        f"{msg['role']}: {msg['content']}" for msg in conversation.messages
+    )
+
     try:
         response = requests.post(
             "http://localhost:11434/api/generate",
-            json={"model": query.model, "prompt": query.prompt,
+            json={"model": query.model, "prompt": context_prompt,
                   "stream": False, "format": query.format},
-            timeout=10
         )
         response.raise_for_status()
         generated_text = response.json()["response"]
