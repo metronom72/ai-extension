@@ -4,7 +4,7 @@ import ContentArea from "components/shared/ContentArea";
 import { Stack } from "@mui/joy";
 import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
-import ContentAppSidebar from "components/shared/ContentAppSidebar";
+import ContentAppSidebar from "components/shared/ContentSidebar";
 import { RelayEnvironmentProvider } from "react-relay";
 import { environment } from "libs/environment";
 

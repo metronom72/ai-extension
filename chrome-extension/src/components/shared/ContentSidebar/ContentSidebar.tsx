@@ -10,7 +10,7 @@ import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 
-const ContentAppSidebar: React.FC = () => {
+const ContentSidebar: React.FC = () => {
   return (
     <Stack>
       <Stack direction="row" spacing={1} useFlexGap>
@@ -63,7 +63,7 @@ const ContentAppSidebar: React.FC = () => {
           </Stack>
         </Stack>
 
-        <Stack spacing={1} useFlexGap alignItems="center">
+        <Stack spacing={1} useFlexGap alignItems="center" pb={2}>
           <Stack alignItems="center">
             <IconButton size="md">
               <SettingsOutlinedIcon />
@@ -83,4 +83,4 @@ const ContentAppSidebar: React.FC = () => {
   );
 };
 
-export default memo(ContentAppSidebar);
+export default memo(ContentSidebar);
