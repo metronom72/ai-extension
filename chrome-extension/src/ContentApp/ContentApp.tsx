@@ -5,28 +5,36 @@ import { Stack } from "@mui/joy";
 import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
 import ContentAppSidebar from "components/shared/ContentAppSidebar";
+import { RelayEnvironmentProvider } from "react-relay";
+import { environment } from "libs/environment";
 
 const ContentApp = () => {
   return (
     <MUIWrapper>
-      <Stack
-        direction="row"
-        sx={{ height: "100vh", position: "relative", backgroundColor: "white" }}
-      >
+      <RelayEnvironmentProvider environment={environment}>
         <Stack
-          direction="column"
+          direction="row"
           sx={{
-            flex: 1,
+            height: "100vh",
             position: "relative",
-            justifyContent: "space-between",
+            backgroundColor: "white",
           }}
         >
-          <ContentHeader />
-          <ContentArea />
-          <ContentForm />
+          <Stack
+            direction="column"
+            sx={{
+              flex: 1,
+              position: "relative",
+              justifyContent: "space-between",
+            }}
+          >
+            <ContentHeader />
+            <ContentArea />
+            <ContentForm />
+          </Stack>
+          <ContentAppSidebar />
         </Stack>
-        <ContentAppSidebar />
-      </Stack>
+      </RelayEnvironmentProvider>
     </MUIWrapper>
   );
 };

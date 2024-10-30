@@ -43,6 +43,8 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:16.18.113"],\
           ["@types/react", "npm:18.3.11"],\
           ["@types/react-dom", "npm:18.3.1"],\
+          ["@types/react-relay", "npm:16.0.6"],\
+          ["@types/relay-runtime", "npm:18.1.0"],\
           ["@types/uuid", "npm:10.0.0"],\
           ["@types/webpack", "npm:5.28.5"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:5.62.0"],\
@@ -71,6 +73,7 @@ const RAW_RUNTIME_STATE =
           ["react-relay", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:18.1.0"],\
           ["react-scripts", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:5.0.1"],\
           ["relay-compiler", "npm:18.1.0"],\
+          ["relay-runtime", "npm:18.1.0"],\
           ["serve", "npm:14.2.3"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["uuid", "npm:10.0.0"],\
@@ -3176,14 +3179,6 @@ const RAW_RUNTIME_STATE =
           ["regenerator-runtime", "npm:0.14.1"]\
         ],\
         "linkType": "HARD"\
-      }],\
-      ["npm:7.26.0", {\
-        "packageLocation": "../../../.yarn/berry/cache/@babel-runtime-npm-7.26.0-9afa3c4ef6-10c0.zip/node_modules/@babel/runtime/",\
-        "packageDependencies": [\
-          ["@babel/runtime", "npm:7.26.0"],\
-          ["regenerator-runtime", "npm:0.14.1"]\
-        ],\
-        "linkType": "HARD"\
       }]\
     ]],\
     ["@babel/template", [\
@@ -5783,12 +5778,32 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/react-relay", [\
+      ["npm:16.0.6", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-react-relay-npm-16.0.6-1ca4c06db9-10c0.zip/node_modules/@types/react-relay/",\
+        "packageDependencies": [\
+          ["@types/react-relay", "npm:16.0.6"],\
+          ["@types/react", "npm:18.3.11"],\
+          ["@types/relay-runtime", "npm:18.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/react-transition-group", [\
       ["npm:4.4.11", {\
         "packageLocation": "../../../.yarn/berry/cache/@types-react-transition-group-npm-4.4.11-dda183055d-10c0.zip/node_modules/@types/react-transition-group/",\
         "packageDependencies": [\
           ["@types/react-transition-group", "npm:4.4.11"],\
           ["@types/react", "npm:18.3.11"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/relay-runtime", [\
+      ["npm:18.1.0", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-relay-runtime-npm-18.1.0-5541f231c0-10c0.zip/node_modules/@types/relay-runtime/",\
+        "packageDependencies": [\
+          ["@types/relay-runtime", "npm:18.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7237,7 +7252,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/babel-plugin-macros-npm-2.8.0-451367d7e7-10c0.zip/node_modules/babel-plugin-macros/",\
         "packageDependencies": [\
           ["babel-plugin-macros", "npm:2.8.0"],\
-          ["@babel/runtime", "npm:7.26.0"],\
+          ["@babel/runtime", "npm:7.25.7"],\
           ["cosmiconfig", "npm:6.0.0"],\
           ["resolve", "patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"]\
         ],\
@@ -7678,6 +7693,8 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:16.18.113"],\
           ["@types/react", "npm:18.3.11"],\
           ["@types/react-dom", "npm:18.3.1"],\
+          ["@types/react-relay", "npm:16.0.6"],\
+          ["@types/relay-runtime", "npm:18.1.0"],\
           ["@types/uuid", "npm:10.0.0"],\
           ["@types/webpack", "npm:5.28.5"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:5.62.0"],\
@@ -7706,6 +7723,7 @@ const RAW_RUNTIME_STATE =
           ["react-relay", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:18.1.0"],\
           ["react-scripts", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:5.0.1"],\
           ["relay-compiler", "npm:18.1.0"],\
+          ["relay-runtime", "npm:18.1.0"],\
           ["serve", "npm:14.2.3"],\
           ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["uuid", "npm:10.0.0"],\
@@ -8499,7 +8517,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/cross-fetch-npm-3.1.8-71c3c05709-10c0.zip/node_modules/cross-fetch/",\
         "packageDependencies": [\
           ["cross-fetch", "npm:3.1.8"],\
-          ["node-fetch", "virtual:73b62641c9c90fdecee7aa4694e580ab641457b92103f2aa08727f00e076699e1488ba15a83537cadb1368d0a75eb658cf3bca22b4a74b5c2f02f344ae255c9f#npm:2.7.0"]\
+          ["node-fetch", "virtual:71c3c0570974c795b79987bb85d4a29514e196f75c7ca2bb56e80f88177e71cbbb73c9a0f02e781c6ccd33e5e8542eb2d0a05fb7aad876eea2872ec6993aa554#npm:2.7.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14293,10 +14311,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:73b62641c9c90fdecee7aa4694e580ab641457b92103f2aa08727f00e076699e1488ba15a83537cadb1368d0a75eb658cf3bca22b4a74b5c2f02f344ae255c9f#npm:2.7.0", {\
-        "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-80247608f3/4/.yarn/berry/cache/node-fetch-npm-2.7.0-587d57004e-10c0.zip/node_modules/node-fetch/",\
+      ["virtual:71c3c0570974c795b79987bb85d4a29514e196f75c7ca2bb56e80f88177e71cbbb73c9a0f02e781c6ccd33e5e8542eb2d0a05fb7aad876eea2872ec6993aa554#npm:2.7.0", {\
+        "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-749a5a9668/4/.yarn/berry/cache/node-fetch-npm-2.7.0-587d57004e-10c0.zip/node_modules/node-fetch/",\
         "packageDependencies": [\
-          ["node-fetch", "virtual:73b62641c9c90fdecee7aa4694e580ab641457b92103f2aa08727f00e076699e1488ba15a83537cadb1368d0a75eb658cf3bca22b4a74b5c2f02f344ae255c9f#npm:2.7.0"],\
+          ["node-fetch", "virtual:71c3c0570974c795b79987bb85d4a29514e196f75c7ca2bb56e80f88177e71cbbb73c9a0f02e781c6ccd33e5e8542eb2d0a05fb7aad876eea2872ec6993aa554#npm:2.7.0"],\
           ["@types/encoding", null],\
           ["encoding", null],\
           ["whatwg-url", "npm:5.0.0"]\
@@ -14641,7 +14659,7 @@ const RAW_RUNTIME_STATE =
           ["agentkeepalive", "npm:4.5.0"],\
           ["form-data-encoder", "npm:1.7.2"],\
           ["formdata-node", "npm:4.4.1"],\
-          ["node-fetch", "virtual:73b62641c9c90fdecee7aa4694e580ab641457b92103f2aa08727f00e076699e1488ba15a83537cadb1368d0a75eb658cf3bca22b4a74b5c2f02f344ae255c9f#npm:2.7.0"],\
+          ["node-fetch", "virtual:71c3c0570974c795b79987bb85d4a29514e196f75c7ca2bb56e80f88177e71cbbb73c9a0f02e781c6ccd33e5e8542eb2d0a05fb7aad876eea2872ec6993aa554#npm:2.7.0"],\
           ["zod", null]\
         ],\
         "packagePeers": [\
@@ -17144,7 +17162,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/react-relay-virtual-8dbf4f80d1/4/.yarn/berry/cache/react-relay-npm-18.1.0-4d0a861bfc-10c0.zip/node_modules/react-relay/",\
         "packageDependencies": [\
           ["react-relay", "virtual:c13b376189aa2058245b2e3ecb38e8ce89a88c6e7ee617072b82711f2fc9aff5bed402b0666fd4c58e86ee8fdf8879c69027359fd00f54d14eefb518b397dd4e#npm:18.1.0"],\
-          ["@babel/runtime", "npm:7.26.0"],\
+          ["@babel/runtime", "npm:7.25.7"],\
           ["@types/react", "npm:18.3.11"],\
           ["fbjs", "npm:3.0.5"],\
           ["invariant", "npm:2.2.4"],\
@@ -17494,7 +17512,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/relay-runtime-npm-18.1.0-0d9c0d8f7f-10c0.zip/node_modules/relay-runtime/",\
         "packageDependencies": [\
           ["relay-runtime", "npm:18.1.0"],\
-          ["@babel/runtime", "npm:7.26.0"],\
+          ["@babel/runtime", "npm:7.25.7"],\
           ["fbjs", "npm:3.0.5"],\
           ["invariant", "npm:2.2.4"]\
         ],\
