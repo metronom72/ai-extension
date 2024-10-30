@@ -2,11 +2,11 @@
 // @ts-nocheck
 
 import fs from 'fs';
-import {fileURLToPath, pathToFileURL, URL as URL$1} from 'url';
+import { URL as URL$1, fileURLToPath, pathToFileURL } from 'url';
 import path from 'path';
-import {createHash} from 'crypto';
-import {EOL} from 'os';
-import esmModule, {createRequire, isBuiltin} from 'module';
+import { createHash } from 'crypto';
+import { EOL } from 'os';
+import esmModule, { createRequire, isBuiltin } from 'module';
 import assert from 'assert';
 
 const SAFE_TIME = 456789e3;
@@ -1355,12 +1355,6 @@ const VIRTUAL_REGEXP = /^(\/(?:[^/]+\/)*?(?:\$\$virtual|__virtual__))((?:\/((?:[
 const VALID_COMPONENT = /^([^/]+-)?[a-f0-9]+$/;
 class VirtualFS extends ProxiedFS {
   baseFs;
-
-  constructor({ baseFs = new NodeFS() } = {}) {
-    super(ppath);
-    this.baseFs = baseFs;
-  }
-
   static makeVirtualPath(base, component, to) {
     if (ppath.basename(base) !== `__virtual__`)
       throw new Error(`Assertion failed: Virtual folders must be named "__virtual__"`);
@@ -1375,7 +1369,6 @@ class VirtualFS extends ProxiedFS {
     const fullVirtualPath = ppath.join(base, component, String(depth), ...finalSegments);
     return fullVirtualPath;
   }
-
   static resolveVirtual(p) {
     const match = p.match(VIRTUAL_REGEXP);
     if (!match || !match[3] && match[5])
@@ -1391,7 +1384,10 @@ class VirtualFS extends ProxiedFS {
     const subpath = match[5] || `.`;
     return VirtualFS.resolveVirtual(ppath.join(target, backstep, subpath));
   }
-
+  constructor({ baseFs = new NodeFS() } = {}) {
+    super(ppath);
+    this.baseFs = baseFs;
+  }
   getExtractHint(hints) {
     return this.baseFs.getExtractHint(hints);
   }
