@@ -5,12 +5,9 @@ import { Stack } from "@mui/joy";
 import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
 import ContentAppSidebar from "components/shared/ContentSidebar";
-import {
-  graphql,
-  RelayEnvironmentProvider,
-  useLazyLoadQuery,
-} from "react-relay";
+import { RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay";
 import { environment } from "libs/environment";
+import graphql from "babel-plugin-relay/macro";
 
 const Query = graphql`
   query ContentAppQuery {
@@ -26,7 +23,6 @@ const Query = graphql`
 `;
 
 const Content = () => {
-  console.log(Query);
   const query = useLazyLoadQuery(Query, {}, {});
 
   console.log(query);

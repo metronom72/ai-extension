@@ -1,4 +1,5 @@
-import { graphql, useMutation } from "react-relay";
+import { useMutation } from "react-relay";
+import graphql from "babel-plugin-relay/macro";
 
 export const useCreateConversation = () => {
   const [mutate, loading] = useMutation(graphql`
