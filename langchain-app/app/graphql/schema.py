@@ -74,14 +74,15 @@ class Mutation:
             return f"Model {model_name} downloaded successfully"
 
     @strawberry.mutation
-    def start_conversation(self, conv_id: str) -> str:
+    def start_conversation(self, conv_id: str) -> Conversation:
         if conv_id in conversations:
             raise ValueError("Conversation ID already exists")
-        conversations[conv_id] = Conversation(id=conv_id, messages=[])
-        return f"Conversation {conv_id} started"
+        conversation = Conversation(id=conv_id, messages=[])
+        conversations[conv_id] = conversation
+        return conversation
 
     @strawberry.mutation
-    async def add_message(self, conv_id: str, query: QueryModel) -> str:
+    async def add_message(self, conv_id: str, query: QueryModel) -> Conversation:
         if conv_id not in conversations:
             raise ValueError("Conversation not found")
 
@@ -99,8 +100,9 @@ class Mutation:
             )
             response.raise_for_status()
             generated_text = response.json().get("response", "")
-            conversation.messages.append(Message(role="assistant", content=generated_text, id=uuid.uuid4()))
-            return generated_text
+            message = Message(role="assistant", content=generated_text, id=uuid.uuid4())
+            conversation.messages.append(message)
+            return conversation
 
 
 schema = strawberry.Schema(query=Query, mutation=Mutation, types=[Conversation, Message])

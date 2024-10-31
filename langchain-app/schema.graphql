@@ -18,8 +18,8 @@ type Message implements Node {
 
 type Mutation {
   downloadModel(modelName: String!): String!
-  startConversation(convId: String!): String!
-  addMessage(convId: String!, query: QueryModel!): String!
+  startConversation(convId: String!): Conversation!
+  addMessage(convId: String!, query: QueryModel!): Conversation!
 }
 
 """An object with a Globally Unique ID"""
