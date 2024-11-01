@@ -3,6 +3,7 @@ from typing import List, Dict, Optional
 
 import httpx
 import strawberry
+from app.adapters.ollama_adapter import OllamaAdapter
 from strawberry.relay import Node, Connection
 
 conversations: Dict[str, "Conversation"] = {}
@@ -52,13 +53,9 @@ class Query:
 
     @strawberry.field
     async def generate_text(self, query: QueryModel) -> str:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://localhost:11434/api/generate",
-                json={"model": query.model, "prompt": query.prompt, "stream": False, "format": query.format}
-            )
-            response.raise_for_status()
-            return response.json().get("response", "")
+        adapter = OllamaAdapter()
+        return await adapter.generate_response(model="gpt-4", prompt="Translate to French: 'Hello, world!'",
+                                               stream=False)
 
 
 @strawberry.type
