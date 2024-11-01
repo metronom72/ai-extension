@@ -1,3 +1,5 @@
+from typing import List
+
 import httpx
 
 
@@ -8,25 +10,25 @@ class OllamaAdapter:
     async def pull_model(self, model_name: str) -> bool:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                "http://localhost:11434/api/pull",
+                f"{self.base_url}/pull",
                 json={"name": model_name}
             )
             response.raise_for_status()
 
             return True
 
-    async def models(self):
+    async def models(self) -> List[str]:
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://localhost:11434/api/tags")
+            response = await client.get(f"{self.base_url}/tags")
             response.raise_for_status()
 
             return response.json().get("models", [])
-
+        
     async def generate_response(self, model: str,
                                 prompt: str, stream: bool = False,
                                 response_format: str = "json") -> str:
         endpoint = f"{self.base_url}/generate"
-        
+
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.post(

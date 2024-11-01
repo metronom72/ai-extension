@@ -5,6 +5,7 @@ from typing import List, Dict, Optional
 import httpx
 import strawberry
 from app.adapters.ollama_adapter import OllamaAdapter
+
 from strawberry.relay import Node, Connection
 
 conversations: Dict[str, "Conversation"] = {}
@@ -14,6 +15,7 @@ conversations: Dict[str, "Conversation"] = {}
 class AdapterEnum(enum.Enum):
     OLLAMA = "ollama"
     NVIDIA = "nvidia"  # add more adapters as needed
+
 
 @strawberry.input
 class QueryModel:
@@ -40,6 +42,7 @@ class Conversation(Node):
 @strawberry.type
 class MessageConnection(Connection[Message]):
     nodes: List[Message]
+
 
 def get_adapter_instance(adapter: AdapterEnum):
     if adapter == AdapterEnum.OLLAMA:
@@ -68,20 +71,17 @@ class Query:
     @strawberry.field
     async def generate_text(self, query: QueryModel, adapter: AdapterEnum) -> str:
         return await get_adapter_instance(adapter).generate_response(model=query.model, prompt=query.prompt,
-                                                                     stream=False, format=query.format)
+                                                                     stream=False, response_format=query.format)
 
 
 @strawberry.type
 class Mutation:
     @strawberry.mutation
     async def download_model(self, model_name: str) -> str:
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://localhost:11434/api/pull",
-                json={"name": model_name}
-            )
-            response.raise_for_status()
-            return f"Model {model_name} downloaded successfully"
+        adapter = get_adapter_instance(AdapterEnum.OLLAMA)
+        await adapter.pull_model(model_name)
+
+        return f"Model {model_name} downloaded successfully"
 
     @strawberry.mutation
     def start_conversation(self, conv_id: str, model: str, adapter: AdapterEnum) -> Conversation:
@@ -107,7 +107,7 @@ class Mutation:
         adapter = get_adapter_instance(conversation.adapter)
 
         generated_text = await adapter.generate_response(model=query.model, prompt=context_prompt,
-                                                   stream=False, format=query.format)
+                                                         stream=False, response_format=query.format)
 
         message = Message(role="assistant", content=generated_text, id=uuid.uuid4())
 
