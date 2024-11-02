@@ -2,6 +2,8 @@ import os
 from typing import List
 import httpx
 
+from app.core import config
+from app.core.config import settings
 from app.core.types import Message
 
 
@@ -25,6 +27,8 @@ class NvidiaAdapter:
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
                 "max_tokens": 1024,
+                "single_response": False,
+                "chat_response": True,
             },
             "abacusai/dracarys-llama-3.1-70b-instruct": f"{self.base_url}/chat/completions",
             "ai21labs/jamba-1.5-large-instruct": f"{self.base_url}/chat/completions",
@@ -108,7 +112,7 @@ class NvidiaAdapter:
         }
 
     def get_filtered_model_data(self, model: str) -> dict:
-        extract_fields = ["field1", "field2", "field3"]
+        extract_fields = ["max_tokens", "presence_penalty", "frequency_penalty", "top_p", "temperature"]
 
         model_data = self.model_dict().get(model, {})
         return {key: model_data[key] for key in extract_fields if key in model_data}
@@ -116,62 +120,78 @@ class NvidiaAdapter:
     def get_generate_payload(self, prompt: str | List[str],
                              model: str, stream: bool,
                              response_format: str = "json") -> dict:
-        return {
+        payload = {
             "model": model,
             "prompt": prompt,
             "stream": stream,
-            "response_format": response_format,
             **self.get_filtered_model_data(model)
         }
+        if response_format:
+            payload["response_format"] = response_format
+        return payload
 
     def get_chat_payload(self, messages: List[Message],
                          model: str, stream: bool,
-                         response_format: str = "json") -> dict:
-        return {
+                         response_format: str = None) -> dict:
+        payload = {
             "model": model,
             "messages": messages,
             "stream": stream,
-            "response_format": response_format,
             **self.get_filtered_model_data(model)
         }
+        if response_format:
+            payload["response_format"] = response_format
+        return payload
 
     async def models(self) -> List[str]:
         return list(self.model_dict().keys())
 
     async def generate_response(self, model: str, prompt: str,
-                                stream: bool = False, response_format: str = "json") -> str:
-        endpoint = self.model_dict()[model]
+                                stream: bool = False, response_format: str = "json") -> dict:
+        model_dict = self.model_dict()[model]
+        if not model_dict["single_response"]:
+            raise NotImplementedError("This method wasn't implemented.")
+
+        endpoint = model_dict["url"]
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.post(
                     endpoint,
                     json=self.get_generate_payload(prompt=prompt, model=model,
                                                    stream=stream, response_format=response_format),
+                    headers={"authorization": f"Bearer {settings.NVIDIA_API_KEY}"},
+                    timeout=httpx.Timeout(120.0)
                 )
                 response.raise_for_status()
-                return response.json().get("response", "")
+                return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return ""
+                return {}
             except httpx.RequestError as e:
                 print(f"Request error occurred: {e}")
-                return ""
+                return {}
 
     async def generate_chat_response(self, model: str, messages: List[Message],
-                                     stream: bool = False, response_format: str = "json") -> str:
-        endpoint = self.model_dict()[model]
+                                     stream: bool = False, response_format: str = None) -> dict:
+        model_dict = self.model_dict()[model]
+        if not model_dict["chat_response"]:
+            raise NotImplementedError("This method wasn't implemented.")
+
+        endpoint = model_dict["url"]
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.post(
                     endpoint,
                     json=self.get_chat_payload(messages=messages, model=model,
                                                stream=stream, response_format=response_format),
+                    headers={"authorization": f"Bearer {settings.NVIDIA_API_KEY}"},
+                    timeout=httpx.Timeout(120.0)
                 )
                 response.raise_for_status()
-                return response.json().get("response", "")
+                return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return ""
+                return {}
             except httpx.RequestError as e:
                 print(f"Request error occurred: {e}")
-                return ""
+                return {}

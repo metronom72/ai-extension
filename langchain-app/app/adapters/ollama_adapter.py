@@ -25,7 +25,7 @@ class OllamaAdapter:
             return response.json().get("models", [])
 
     async def generate_response(self, model: str, prompt: str,
-                                stream: bool = False, response_format: str = "json") -> str:
+                                stream: bool = False, response_format: str = "json") -> dict:
         endpoint = f"{self.base_url}/generate"
         async with httpx.AsyncClient() as client:
             try:
@@ -39,16 +39,16 @@ class OllamaAdapter:
                     }
                 )
                 response.raise_for_status()
-                return response.json().get("response", "")
+                return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return ""
+                return {}
             except httpx.RequestError as e:
                 print(f"Request error occurred: {e}")
-                return ""
+                return {}
 
     async def generate_chat_response(self, model: str, messages: List[Message],
-                                     stream: bool = False, response_format: str = "json") -> str:
+                                     stream: bool = False, response_format: str = "json") -> dict:
         endpoint = f"{self.base_url}/chat/completions"
         async with httpx.AsyncClient() as client:
             try:
@@ -62,10 +62,10 @@ class OllamaAdapter:
                     }
                 )
                 response.raise_for_status()
-                return response.json().get("response", "")
+                return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return ""
+                return {}
             except httpx.RequestError as e:
                 print(f"Request error occurred: {e}")
-                return ""
+                return {}
