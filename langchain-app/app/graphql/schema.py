@@ -1,8 +1,7 @@
 import enum
 import uuid
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, TypedDict, Literal
 
-import httpx
 import strawberry
 from app.adapters.ollama_adapter import OllamaAdapter
 
@@ -100,14 +99,15 @@ class Mutation:
         conversation = conversations[conv_id]
         conversation.messages.append(Message(role="user", content=query.prompt, id=uuid.uuid4()))
 
-        context_prompt = "\n".join(
-            f"{msg.role}: {msg.content}" for msg in conversation.messages
-        )
-
         adapter = get_adapter_instance(conversation.adapter)
 
-        generated_text = await adapter.generate_response(model=query.model, prompt=context_prompt,
-                                                         stream=False, response_format=query.format)
+        messages = [
+            {"role": message.role, "content": message.content}
+            for message in conversation.messages
+        ]
+
+        generated_text = await adapter.generate_chat_response(model=query.model, messages=messages,
+                                                              stream=False, response_format=query.format)
 
         message = Message(role="assistant", content=generated_text, id=uuid.uuid4())
 
