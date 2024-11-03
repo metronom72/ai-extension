@@ -25,7 +25,7 @@ class NvidiaAdapter:
                 "single_response": False,
                 "chat_response": True,
                 "website": "https://docs.api.nvidia.com/nim/reference/01-ai-yi-large",
-                "license": "https://platform.01.ai/termsPage.html",
+                "license": ["https://platform.01.ai/termsPage.html"],
 
                 "temperature": 0.2,
                 "top_p": 0.7,
@@ -41,7 +41,7 @@ class NvidiaAdapter:
                 "single_response": False,
                 "chat_response": True,
                 "website": "https://docs.api.nvidia.com/nim/reference/abacusai-dracarys-llama-3_1-70b-instruct",
-                "license": "https://www.llama.com/llama3/license/",
+                "license": ["https://www.llama.com/llama3/license/"],
 
                 "max_tokens": 1024,
                 "stream": False,
@@ -59,7 +59,8 @@ class NvidiaAdapter:
                 "single_response": False,
                 "chat_response": True,
                 "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-large-instruct",
-                "license": "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf",
+                "license": [
+                    "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf"],
 
                 "temperature": 0.2,
                 "top_p": 0.7,
@@ -74,7 +75,8 @@ class NvidiaAdapter:
                 "single_response": False,
                 "chat_response": True,
                 "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-mini-instruct-infer",
-                "license": "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf",
+                "license": [
+                    "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf"],
 
                 "temperature": 0.2,
                 "top_p": 0.7,
@@ -101,7 +103,24 @@ class NvidiaAdapter:
                 "presence_penalty": 0,
                 "seed": 0,
             },
-            "baichuan-inc/baichuan2-13b-chat": f"{self.base_url}/chat/completions",
+            "baichuan-inc/baichuan2-13b-chat": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
+                "single_response": False,
+                "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/baichuan-inc-baichuan2-13b-chat",
+                "license": ["https://github.com/baichuan-inc/Baichuan2/blob/main/LICENSE",
+                            "https://huggingface.co/baichuan-inc/Baichuan2-7B-Base/resolve/main/Baichuan%202%E6%A8%A1%E5%9E%8B%E7%A4%BE%E5%8C%BA%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE.pdf"],
+
+                "max_tokens": 1024,
+                "temperature": 0.5,
+                "top_p": 1,
+                "stop": None,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+            },
             "bigcode/starcoder2-7b": f"{self.base_url}/chat/completions",
             "bigcode/starcoder2-15b": f"{self.base_url}/chat/completions",
             "databricks/dbrx-instruct": f"{self.base_url}/chat/completions",
@@ -186,17 +205,13 @@ class NvidiaAdapter:
 
     def get_generate_payload(self, prompt: str | List[str],
                              model: str, stream: bool,
-                             response_format: str = "json") -> dict:
+                             response_format: str = None) -> dict:
         payload = {
             "model": model,
             "prompt": prompt,
             "stream": stream,
             **self.get_filtered_model_data(model)
         }
-
-        if model == "aisingapore/sea-lion-7b-instruct":
-            del payload["messages"]
-            payload["messages"] = " ".join([message["content"] for message in messages])
 
         if response_format:
             payload["response_format"] = response_format
@@ -212,7 +227,7 @@ class NvidiaAdapter:
             **self.get_filtered_model_data(model)
         }
 
-        if model == "aisingapore/sea-lion-7b-instruct":
+        if model == "aisingapore/sea-lion-7b-instruct" or model == "baichuan-inc/baichuan2-13b-chat":
             del payload["messages"]
             payload["messages"] = " ".join([message["content"] for message in messages])
 
@@ -224,7 +239,7 @@ class NvidiaAdapter:
         return list(self.model_dict().keys())
 
     async def generate_response(self, model: str, prompt: str,
-                                stream: bool = False, response_format: str = "json") -> dict:
+                                stream: bool = False, response_format: str = None) -> dict:
         model_dict = self.model_dict()[model]
         if not model_dict["single_response"]:
             raise NotImplementedError("This method wasn't implemented.")
