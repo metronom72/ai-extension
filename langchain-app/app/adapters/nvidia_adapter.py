@@ -174,7 +174,15 @@ class NvidiaAdapter:
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
             },
-            "deepseek-ai/deepseek-coder-6.7b-instruct": f"{self.base_url}/chat/completions",
+            "deepseek-ai/deepseek-coder-6.7b-instruct": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
+                "api_type": "conversational",
+                "website": "https://docs.api.nvidia.com/nim/reference/deepseek-ai-deepseek-coder-6_7b-instruct",
+                "license": ["https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-instruct/blob/main/LICENSE"],
+            },
             "google/gemma-2b": f"{self.base_url}/chat/completions",
             "google/gemma-7b": f"{self.base_url}/chat/completions",
             "google/gemma-2-2b-it": f"{self.base_url}/chat/completions",
