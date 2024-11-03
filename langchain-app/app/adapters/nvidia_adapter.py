@@ -146,7 +146,7 @@ class NvidiaAdapter:
                 "active": True,
                 "single_response": True,
                 "chat_response": False,
-                "website": "https://docs.api.nvidia.com/nim/reference/bigcode-starcoder2-7b",
+                "website": "https://docs.api.nvidia.com/nim/reference/bigcode-starcoder2-15b",
                 "license": ["https://huggingface.co/spaces/bigcode/bigcode-model-license-agreement"],
 
                 "max_tokens": 1024,
@@ -156,7 +156,27 @@ class NvidiaAdapter:
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
             },
-            "databricks/dbrx-instruct": f"{self.base_url}/chat/completions",
+            "databricks/dbrx-instruct": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
+                "single_response": True,
+                "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/databricks-dbrx-instruct",
+                "license": [
+                    "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+                    "https://docs.nvidia.com/ai-foundation-models-community-license.pdf",
+                    "https://www.databricks.com/legal/open-model-license"
+                ],
+
+                "max_tokens": 1024,
+                "temperature": 0.5,
+                "top_p": 1,
+                "stop": None,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+            },
             "deepseek-ai/deepseek-coder-6.7b-instruct": f"{self.base_url}/chat/completions",
             "google/gemma-2b": f"{self.base_url}/chat/completions",
             "google/gemma-7b": f"{self.base_url}/chat/completions",
@@ -260,7 +280,7 @@ class NvidiaAdapter:
             **self.get_filtered_model_data(model)
         }
 
-        if model == "aisingapore/sea-lion-7b-instruct" or model == "baichuan-inc/baichuan2-13b-chat":
+        if model == "aisingapore/sea-lion-7b-instruct" or model == "baichuan-inc/baichuan2-13b-chat" or model == "databricks/dbrx-instruct":
             del payload["messages"]
             payload["messages"] = " ".join([message["content"] for message in messages])
 
