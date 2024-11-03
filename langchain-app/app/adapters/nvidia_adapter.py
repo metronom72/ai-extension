@@ -1,6 +1,8 @@
+import json
 import os
 from typing import List, Any
 import httpx
+from colorama import Fore
 from httpx import HTTPStatusError, RequestError
 
 from app.core import config
@@ -23,8 +25,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": False,
-                "chat_response": True,
+                "api_type": "conversational",
                 "website": "https://docs.api.nvidia.com/nim/reference/01-ai-yi-large",
                 "license": ["https://platform.01.ai/termsPage.html"],
 
@@ -39,8 +40,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": False,
-                "chat_response": True,
+                "api_type": "conversational",
                 "website": "https://docs.api.nvidia.com/nim/reference/abacusai-dracarys-llama-3_1-70b-instruct",
                 "license": ["https://www.llama.com/llama3/license/"],
 
@@ -52,13 +52,14 @@ class NvidiaAdapter:
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
             },
+
+            # doesn't work stable enough
             "ai21labs/jamba-1.5-large-instruct": {
                 "url": f"{self.base_url}/chat/completions",
 
                 "production": False,
                 "active": True,
-                "single_response": False,
-                "chat_response": True,
+                "api_type": "conversational",
                 "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-large-instruct",
                 "license": [
                     "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf"],
@@ -68,13 +69,14 @@ class NvidiaAdapter:
                 "max_tokens": 1024,
                 "seed": 42,
             },
+
+            # doesn't work stable enough
             "ai21labs/jamba-1.5-mini-instruct": {
                 "url": f"{self.base_url}/chat/completions",
 
                 "production": False,
                 "active": True,
-                "single_response": False,
-                "chat_response": True,
+                "api_type": "conversational",
                 "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-mini-instruct-infer",
                 "license": [
                     "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf"],
@@ -89,8 +91,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": False,
-                "chat_response": True,
+                "api_type": "general_purpose",
                 "website": "https://docs.api.nvidia.com/nim/reference/aisingapore-sea-lion-7b-instruct",
                 "license": ["https://docs.nvidia.com/ai-foundation-models-community-license.pdf",
                             "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
@@ -109,8 +110,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": False,
-                "chat_response": True,
+                "api_type": "general_purpose",
                 "website": "https://docs.api.nvidia.com/nim/reference/baichuan-inc-baichuan2-13b-chat",
                 "license": ["https://github.com/baichuan-inc/Baichuan2/blob/main/LICENSE",
                             "https://huggingface.co/baichuan-inc/Baichuan2-7B-Base/resolve/main/Baichuan%202%E6%A8%A1%E5%9E%8B%E7%A4%BE%E5%8C%BA%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE.pdf"],
@@ -127,8 +127,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": True,
-                "chat_response": False,
+                "api_type": None,
                 "website": "https://docs.api.nvidia.com/nim/reference/bigcode-starcoder2-7b",
                 "license": ["https://huggingface.co/spaces/bigcode/bigcode-model-license-agreement"],
 
@@ -144,8 +143,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": True,
-                "chat_response": False,
+                "api_type": None,
                 "website": "https://docs.api.nvidia.com/nim/reference/bigcode-starcoder2-15b",
                 "license": ["https://huggingface.co/spaces/bigcode/bigcode-model-license-agreement"],
 
@@ -161,8 +159,7 @@ class NvidiaAdapter:
 
                 "production": False,
                 "active": True,
-                "single_response": True,
-                "chat_response": True,
+                "api_type": "general_purpose",
                 "website": "https://docs.api.nvidia.com/nim/reference/databricks-dbrx-instruct",
                 "license": [
                     "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
@@ -256,33 +253,23 @@ class NvidiaAdapter:
         model_data = self.model_dict().get(model, {})
         return {key: model_data[key] for key in extract_fields if key in model_data}
 
-    def get_generate_payload(self, prompt: str | List[str],
-                             model: str, stream: bool,
-                             response_format: str = None) -> dict:
+    def get_payload(self, messages: List[Message],
+                    model: str, stream: bool,
+                    response_format: str = None) -> dict:
         payload = {
             "model": model,
-            "prompt": prompt,
             "stream": stream,
             **self.get_filtered_model_data(model)
         }
 
-        if response_format:
-            payload["response_format"] = response_format
-        return payload
+        model_dict = self.model_dict()[model]
 
-    def get_chat_payload(self, messages: List[Message],
-                         model: str, stream: bool,
-                         response_format: str = None) -> dict:
-        payload = {
-            "model": model,
-            "messages": messages,
-            "stream": stream,
-            **self.get_filtered_model_data(model)
-        }
-
-        if model == "aisingapore/sea-lion-7b-instruct" or model == "baichuan-inc/baichuan2-13b-chat" or model == "databricks/dbrx-instruct":
-            del payload["messages"]
+        if model_dict["api_type"] == 'general_purpose':
             payload["messages"] = " ".join([message["content"] for message in messages])
+        elif model_dict["api_type"] == "conversational":
+            payload["messages"] = messages
+        else:
+            payload["prompt"] = " ".join([message["content"] for message in messages])
 
         if response_format:
             payload["response_format"] = response_format
@@ -291,38 +278,11 @@ class NvidiaAdapter:
     async def models(self) -> List[str]:
         return list(self.model_dict().keys())
 
-    async def generate_response(self, model: str, prompt: str,
+    async def generate_response(self, model: str, messages: List[Message],
                                 stream: bool = False,
                                 response_format: str = None) -> HTTPStatusError | RequestError | dict:
         model_dict = self.model_dict()[model]
-        if not model_dict["single_response"]:
-            raise NotImplementedError("This method wasn't implemented.")
-
-        endpoint = model_dict["url"]
-        async with httpx.AsyncClient() as client:
-            try:
-                response = await client.post(
-                    endpoint,
-                    json=self.get_generate_payload(prompt=prompt, model=model,
-                                                   stream=stream, response_format=response_format),
-                    headers={"authorization": f"Bearer {settings.NVIDIA_API_KEY}"},
-                    timeout=httpx.Timeout(120.0)
-                )
-                response.raise_for_status()
-                return response.json()
-            except httpx.HTTPStatusError as e:
-                print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return e
-            except httpx.RequestError as e:
-                print(f"Request error occurred: {e}")
-                return e
-
-    async def generate_chat_response(self, model: str, messages: List[Message],
-                                     stream: bool = False,
-                                     response_format: str = None) -> HTTPStatusError | RequestError | dict:
-        model_dict = self.model_dict()[model]
-        if not model_dict["chat_response"]:
-            raise NotImplementedError("This method wasn't implemented.")
+        print(f"model object is {json.dumps(model_dict, indent=2)}")
 
         if not model_dict["active"]:
             raise ModelNotActiveError(model_dict)
@@ -330,18 +290,28 @@ class NvidiaAdapter:
         endpoint = model_dict["url"]
         async with httpx.AsyncClient() as client:
             try:
+                payload = self.get_payload(messages=messages, model=model,
+                                           stream=stream, response_format=response_format)
+                print(f"generate response for payload {json.dumps(payload, indent=2)}")
+
+                additional_headers = {"authorization": f"Bearer {settings.NVIDIA_API_KEY}"}
+                print(f"with additional headers {json.dumps(additional_headers, indent=2)}")
+                print(f"requesting endpoint {endpoint}")
+
                 response = await client.post(
                     endpoint,
-                    json=self.get_chat_payload(messages=messages, model=model,
-                                               stream=stream, response_format=response_format),
-                    headers={"authorization": f"Bearer {settings.NVIDIA_API_KEY}"},
+                    json=payload,
+                    headers=additional_headers,
                     timeout=httpx.Timeout(120.0)
                 )
                 response.raise_for_status()
                 return response.json()
             except httpx.HTTPStatusError as e:
-                print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
+                print(f"{Fore.RED}HTTP error occurred: {e.response.status_code} - {e.response.text}")
+                return e
+            except httpx.TimeoutException as e:
+                print(f"{Fore.RED}HTTP Timeout Exception for model: {model}")
                 return e
             except httpx.RequestError as e:
-                print(f"Request error occurred: {e}")
+                print(f"{Fore.RED}Request error occurred: {e}")
                 return e
