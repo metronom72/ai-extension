@@ -77,7 +77,7 @@ class NvidiaAdapter:
                 "production": False,
                 "active": True,
                 "api_type": "conversational",
-                "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-mini-instruct-infer",
+                "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-mini-instruct",
                 "license": [
                     "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf"],
 
@@ -183,7 +183,22 @@ class NvidiaAdapter:
                 "website": "https://docs.api.nvidia.com/nim/reference/deepseek-ai-deepseek-coder-6_7b-instruct",
                 "license": ["https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-instruct/blob/main/LICENSE"],
             },
-            "google/gemma-2b": f"{self.base_url}/chat/completions",
+            "google/gemma-2b": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
+                "api_type": "conversational",
+                "website": "https://docs.api.nvidia.com/nim/reference/google-gemma-2b",
+                "license": ["https://docs.api.nvidia.com/nim/reference/google-gemma-2b"],
+
+                "max_tokens": 1024,
+                "temperature": 0.5,
+                "top_p": 1,
+                "stop": None,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+            },
             "google/gemma-7b": f"{self.base_url}/chat/completions",
             "google/gemma-2-2b-it": f"{self.base_url}/chat/completions",
             "google/gemma-2-9b-it": f"{self.base_url}/chat/completions",
