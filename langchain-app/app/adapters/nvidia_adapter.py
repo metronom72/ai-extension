@@ -1,6 +1,7 @@
 import os
-from typing import List
+from typing import List, Any
 import httpx
+from httpx import HTTPStatusError, RequestError
 
 from app.core import config
 from app.core.config import settings
@@ -55,7 +56,7 @@ class NvidiaAdapter:
                 "url": f"{self.base_url}/chat/completions",
 
                 "production": False,
-                "active": False,
+                "active": True,
                 "single_response": False,
                 "chat_response": True,
                 "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-large-instruct",
@@ -121,7 +122,23 @@ class NvidiaAdapter:
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
             },
-            "bigcode/starcoder2-7b": f"{self.base_url}/chat/completions",
+            "bigcode/starcoder2-7b": {
+                "url": f"{self.base_url}/completions",
+
+                "production": False,
+                "active": True,
+                "single_response": True,
+                "chat_response": False,
+                "website": "https://docs.api.nvidia.com/nim/reference/bigcode-starcoder2-7b",
+                "license": ["https://huggingface.co/spaces/bigcode/bigcode-model-license-agreement"],
+
+                "max_tokens": 1024,
+                "temperature": 0.5,
+                "top_p": 1,
+                "stop": None,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+            },
             "bigcode/starcoder2-15b": f"{self.base_url}/chat/completions",
             "databricks/dbrx-instruct": f"{self.base_url}/chat/completions",
             "deepseek-ai/deepseek-coder-6.7b-instruct": f"{self.base_url}/chat/completions",
@@ -239,7 +256,8 @@ class NvidiaAdapter:
         return list(self.model_dict().keys())
 
     async def generate_response(self, model: str, prompt: str,
-                                stream: bool = False, response_format: str = None) -> dict:
+                                stream: bool = False,
+                                response_format: str = None) -> HTTPStatusError | RequestError | dict:
         model_dict = self.model_dict()[model]
         if not model_dict["single_response"]:
             raise NotImplementedError("This method wasn't implemented.")
@@ -258,13 +276,14 @@ class NvidiaAdapter:
                 return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return {}
+                return e
             except httpx.RequestError as e:
                 print(f"Request error occurred: {e}")
-                return {}
+                return e
 
     async def generate_chat_response(self, model: str, messages: List[Message],
-                                     stream: bool = False, response_format: str = None) -> dict:
+                                     stream: bool = False,
+                                     response_format: str = None) -> HTTPStatusError | RequestError | dict:
         model_dict = self.model_dict()[model]
         if not model_dict["chat_response"]:
             raise NotImplementedError("This method wasn't implemented.")
@@ -286,7 +305,7 @@ class NvidiaAdapter:
                 return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-                return {}
+                return e
             except httpx.RequestError as e:
                 print(f"Request error occurred: {e}")
-                return {}
+                return e
