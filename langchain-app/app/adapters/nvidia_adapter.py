@@ -4,6 +4,7 @@ import httpx
 
 from app.core import config
 from app.core.config import settings
+from app.core.model_not_found_error import ModelNotActiveError
 from app.core.types import Message
 
 
@@ -18,22 +19,88 @@ class NvidiaAdapter:
         return {
             "01-ai/yi-large": {
                 "url": f"{self.base_url}/chat/completions",
+
                 "production": False,
-                "active": False,
-                "website": "https://platform.01.ai/",
-                "terms": "https://platform.01.ai/termsPage.html",
+                "active": True,
+                "single_response": False,
+                "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/01-ai-yi-large",
+                "license": "https://platform.01.ai/termsPage.html",
+
                 "temperature": 0.2,
                 "top_p": 0.7,
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
                 "max_tokens": 1024,
+            },
+            "abacusai/dracarys-llama-3.1-70b-instruct": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
                 "single_response": False,
                 "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/abacusai-dracarys-llama-3_1-70b-instruct",
+                "license": "https://www.llama.com/llama3/license/",
+
+                "max_tokens": 1024,
+                "stream": False,
+                "temperature": 0.5,
+                "top_p": 1,
+                "stop": None,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
             },
-            "abacusai/dracarys-llama-3.1-70b-instruct": f"{self.base_url}/chat/completions",
-            "ai21labs/jamba-1.5-large-instruct": f"{self.base_url}/chat/completions",
-            "ai21labs/jamba-1.5-mini-instruct": f"{self.base_url}/chat/completions",
-            "aisingapore/sea-lion-7b-instruct": f"{self.base_url}/chat/completions",
+            "ai21labs/jamba-1.5-large-instruct": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": False,
+                "single_response": False,
+                "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-large-instruct",
+                "license": "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf",
+
+                "temperature": 0.2,
+                "top_p": 0.7,
+                "max_tokens": 1024,
+                "seed": 42,
+            },
+            "ai21labs/jamba-1.5-mini-instruct": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
+                "single_response": False,
+                "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/ai21labs-jamba-1-5-mini-instruct-infer",
+                "license": "https://assets.ngc.nvidia.com/products/api-catalog/legal/Jamba_Open_Model_License_Agreement.pdf",
+
+                "temperature": 0.2,
+                "top_p": 0.7,
+                "max_tokens": 1024,
+                "seed": 42,
+            },
+            "aisingapore/sea-lion-7b-instruct": {
+                "url": f"{self.base_url}/chat/completions",
+
+                "production": False,
+                "active": True,
+                "single_response": False,
+                "chat_response": True,
+                "website": "https://docs.api.nvidia.com/nim/reference/aisingapore-sea-lion-7b-instruct",
+                "license": ["https://docs.nvidia.com/ai-foundation-models-community-license.pdf",
+                            "https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf",
+                            "https://opensource.org/license/MIT"],
+
+                "max_tokens": 1024,
+                "temperature": 0.5,
+                "top_p": 1,
+                "stop": None,
+                "frequency_penalty": 0,
+                "presence_penalty": 0,
+                "seed": 0,
+            },
             "baichuan-inc/baichuan2-13b-chat": f"{self.base_url}/chat/completions",
             "bigcode/starcoder2-7b": f"{self.base_url}/chat/completions",
             "bigcode/starcoder2-15b": f"{self.base_url}/chat/completions",
@@ -112,7 +179,7 @@ class NvidiaAdapter:
         }
 
     def get_filtered_model_data(self, model: str) -> dict:
-        extract_fields = ["max_tokens", "presence_penalty", "frequency_penalty", "top_p", "temperature"]
+        extract_fields = ["max_tokens", "presence_penalty", "frequency_penalty", "top_p", "temperature", "seed", "stop"]
 
         model_data = self.model_dict().get(model, {})
         return {key: model_data[key] for key in extract_fields if key in model_data}
@@ -126,6 +193,11 @@ class NvidiaAdapter:
             "stream": stream,
             **self.get_filtered_model_data(model)
         }
+
+        if model == "aisingapore/sea-lion-7b-instruct":
+            del payload["messages"]
+            payload["messages"] = " ".join([message["content"] for message in messages])
+
         if response_format:
             payload["response_format"] = response_format
         return payload
@@ -139,6 +211,11 @@ class NvidiaAdapter:
             "stream": stream,
             **self.get_filtered_model_data(model)
         }
+
+        if model == "aisingapore/sea-lion-7b-instruct":
+            del payload["messages"]
+            payload["messages"] = " ".join([message["content"] for message in messages])
+
         if response_format:
             payload["response_format"] = response_format
         return payload
@@ -176,6 +253,9 @@ class NvidiaAdapter:
         model_dict = self.model_dict()[model]
         if not model_dict["chat_response"]:
             raise NotImplementedError("This method wasn't implemented.")
+
+        if not model_dict["active"]:
+            raise ModelNotActiveError(model_dict)
 
         endpoint = model_dict["url"]
         async with httpx.AsyncClient() as client:
