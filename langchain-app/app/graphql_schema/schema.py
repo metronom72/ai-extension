@@ -1,11 +1,12 @@
 import enum
 import uuid
-from typing import List, Dict, Optional, TypedDict, Literal
+from typing import List, Dict, Optional
 
 import strawberry
-from app.adapters.ollama_adapter import OllamaAdapter
-
 from strawberry.relay import Node, Connection
+
+from app.adapters.nvidia_adapter import NvidiaAdapter
+from app.adapters.ollama_adapter import OllamaAdapter
 
 conversations: Dict[str, "Conversation"] = {}
 
@@ -13,7 +14,7 @@ conversations: Dict[str, "Conversation"] = {}
 @strawberry.enum
 class AdapterEnum(enum.Enum):
     OLLAMA = "ollama"
-    NVIDIA = "nvidia"  # add more adapters as needed
+    NVIDIA = "nvidia"
 
 
 @strawberry.input
@@ -47,8 +48,7 @@ def get_adapter_instance(adapter: AdapterEnum):
     if adapter == AdapterEnum.OLLAMA:
         return OllamaAdapter()
     elif adapter == AdapterEnum.NVIDIA:
-        # Replace with actual NVIDIA adapter initialization
-        return None
+        return NvidiaAdapter()
     else:
         raise ValueError(f"Adapter '{adapter}' not supported")
 
@@ -66,11 +66,6 @@ class Query:
     @strawberry.field
     def conversations(self) -> List[Conversation]:
         return list(conversations.values())
-
-    @strawberry.field
-    async def generate_text(self, query: QueryModel, adapter: AdapterEnum) -> str:
-        return await get_adapter_instance(adapter).generate_response(model=query.model, prompt=query.prompt,
-                                                                     stream=False, response_format=query.format)
 
 
 @strawberry.type

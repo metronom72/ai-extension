@@ -1,49 +1,49 @@
 enum AdapterEnum {
-  OLLAMA
-  NVIDIA
+    OLLAMA
+    NVIDIA
 }
 
 type Conversation implements Node {
-  """The Globally Unique ID of this object"""
-  id: GlobalID!
-  messages: [Message!]!
-  model: String!
-  adapter: AdapterEnum!
+    """The Globally Unique ID of this object"""
+    id: GlobalID!
+    messages: [Message!]!
+    model: String!
+    adapter: AdapterEnum!
 }
 
 """
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 """
-scalar GlobalID @specifiedBy(url: "https://relay.dev/graphql/objectidentification.htm")
+scalar GlobalID @specifiedBy(url: "https://relay.dev/graphql_schema/objectidentification.htm")
 
 type Message implements Node {
-  """The Globally Unique ID of this object"""
-  id: GlobalID!
-  role: String!
-  content: String!
+    """The Globally Unique ID of this object"""
+    id: GlobalID!
+    role: String!
+    content: String!
 }
 
 type Mutation {
-  downloadModel(modelName: String!): String!
-  startConversation(convId: String!, model: String!, adapter: AdapterEnum!): Conversation!
-  addMessage(convId: String!, query: QueryModel!): Conversation!
+    downloadModel(modelName: String!): String!
+    startConversation(convId: String!, model: String!, adapter: AdapterEnum!): Conversation!
+    addMessage(convId: String!, query: QueryModel!): Conversation!
 }
 
 """An object with a Globally Unique ID"""
 interface Node {
-  """The Globally Unique ID of this object"""
-  id: GlobalID!
+    """The Globally Unique ID of this object"""
+    id: GlobalID!
 }
 
 type Query {
-  listModels(adapter: AdapterEnum!): [String!]!
-  conversation(id: ID!): Conversation
-  conversations: [Conversation!]!
-  generateText(query: QueryModel!, adapter: AdapterEnum!): String!
+    listModels(adapter: AdapterEnum!): [String!]!
+    conversation(id: ID!): Conversation
+    conversations: [Conversation!]!
+    generateText(query: QueryModel!, adapter: AdapterEnum!): String!
 }
 
 input QueryModel {
-  prompt: String!
-  model: String! = "llama2"
-  format: String = null
+    prompt: String!
+    model: String! = "llama2"
+    format: String = null
 }

@@ -6,7 +6,7 @@ from strawberry.fastapi import GraphQLRouter
 
 from app.core.config import settings
 from app.core.logging import setup_logging
-from app.graphql.schema import schema
+from app.graphql_schema.schema import schema
 
 setup_logging()
 
@@ -28,7 +28,7 @@ app = FastAPI(
 
 graphql_app = GraphQLRouter(schema)
 
-app.include_router(graphql_app, prefix="/graphql")
+app.include_router(graphql_app, prefix="/graphql_schema")
 
 app.add_middleware(
     CORSMiddleware,
