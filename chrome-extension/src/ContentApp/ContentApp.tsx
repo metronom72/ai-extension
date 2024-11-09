@@ -12,7 +12,6 @@ import {
 } from "react-relay";
 import { environment } from "libs/environment";
 import graphql from "babel-plugin-relay/macro";
-import GlobalStateProvider from "providers/GlobalStateProvider";
 
 const Query = graphql`
   query ContentAppQuery {
@@ -30,8 +29,6 @@ const Query = graphql`
 
 const Content = ({ queryReference }: { queryReference: any }) => {
   const data = usePreloadedQuery(Query, queryReference);
-
-  console.log(data);
 
   return (
     <Stack
@@ -60,18 +57,17 @@ const Content = ({ queryReference }: { queryReference: any }) => {
 };
 
 const ContentApp = () => {
-  const [queryReference, loadQuery, disposeQuery] = useQueryLoader(Query);
+  const [queryReference, loadQuery] = useQueryLoader(Query);
   useEffect(() => {
     loadQuery({});
   }, []);
 
-  console.log(queryReference, loadQuery, disposeQuery);
   return (
     <MUIWrapper>
       <RelayEnvironmentProvider environment={environment}>
-        <GlobalStateProvider>
-          <Content queryReference={queryReference} />
-        </GlobalStateProvider>
+        {/*<SidebarStateProvider>*/}
+        <Content queryReference={queryReference} />
+        {/*</SidebarStateProvider>*/}
       </RelayEnvironmentProvider>
     </MUIWrapper>
   );

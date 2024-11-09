@@ -9,11 +9,11 @@ import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { useGlobalState } from "providers/GlobalStateProvider/GlobalStateProvider";
+import { useSidebarState } from "../../../providers/SidebarStateProvider/SidebarStateProvider";
 
 const ContentSidebar: React.FC = () => {
-  const { ...rest } = useGlobalState();
-  console.log(rest);
+  const { ...rest } = useSidebarState();
+
   return (
     <Stack>
       <Stack direction="row" spacing={1} useFlexGap>

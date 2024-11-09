@@ -14,6 +14,11 @@ module.exports = override(
             filename: 'static/js/[name].js',
         };
 
+        config.optimization = {
+            ...config.optimization,
+            minimize: false,
+        }
+
         config.resolve.extensions.push('.ts', '.tsx');
 
         return config;
