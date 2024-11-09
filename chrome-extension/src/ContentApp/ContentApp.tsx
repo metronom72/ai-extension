@@ -1,17 +1,23 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import MUIWrapper from "components/v1/MUIWrapper";
 import ContentArea from "components/shared/ContentArea";
 import { Stack } from "@mui/joy";
 import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
 import ContentAppSidebar from "components/shared/ContentSidebar";
-import { RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay";
+import {
+  RelayEnvironmentProvider,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay";
 import { environment } from "libs/environment";
 import graphql from "babel-plugin-relay/macro";
+import GlobalStateProvider from "providers/GlobalStateProvider";
 
 const Query = graphql`
   query ContentAppQuery {
     conversations {
+      id
       messages {
         id
         role
@@ -22,10 +28,11 @@ const Query = graphql`
   }
 `;
 
-const Content = () => {
-  const query = useLazyLoadQuery(Query, {}, {});
+const Content = ({ queryReference }: { queryReference: any }) => {
+  const data = usePreloadedQuery(Query, queryReference);
 
-  console.log(query);
+  console.log(data);
+
   return (
     <Stack
       direction="row"
@@ -53,10 +60,18 @@ const Content = () => {
 };
 
 const ContentApp = () => {
+  const [queryReference, loadQuery, disposeQuery] = useQueryLoader(Query);
+  useEffect(() => {
+    loadQuery({});
+  }, []);
+
+  console.log(queryReference, loadQuery, disposeQuery);
   return (
     <MUIWrapper>
       <RelayEnvironmentProvider environment={environment}>
-        <Content />
+        <GlobalStateProvider>
+          <Content queryReference={queryReference} />
+        </GlobalStateProvider>
       </RelayEnvironmentProvider>
     </MUIWrapper>
   );

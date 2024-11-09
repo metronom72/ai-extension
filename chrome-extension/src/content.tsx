@@ -4,9 +4,11 @@ import ContentApp from "./ContentApp";
 
 const appContainer = document.createElement("div");
 
+export const contentId = "briefcat-extension-root";
+
 function setMaxWidth() {
   const maxWidth = `${window.innerWidth - 600}px`;
-  appContainer.id = "briefcat-extension-root";
+  appContainer.id = contentId;
 
   appContainer.style.position = "fixed";
 

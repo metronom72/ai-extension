@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<75c69b1fc76daa564bc569902cb088dc>>
+ * @generated SignedSource<<9172bc0f2264340442ee43291b11c5dc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -42,6 +42,7 @@ v1 = [
     "name": "conversations",
     "plural": true,
     "selections": [
+      (v0/*: any*/),
       {
         "alias": null,
         "args": null,
@@ -67,8 +68,7 @@ v1 = [
           }
         ],
         "storageKey": null
-      },
-      (v0/*: any*/)
+      }
     ],
     "storageKey": null
   }
@@ -91,16 +91,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "9dd0d278eb5ae4f74c9ec68d51bfde81",
+    "cacheID": "b4ac40ed680fe77b7390c6f3ee46a7de",
     "id": null,
     "metadata": {},
     "name": "ContentAppQuery",
     "operationKind": "query",
-    "text": "query ContentAppQuery {\n  conversations {\n    messages {\n      id\n      role\n      content\n    }\n    id\n  }\n}\n"
+    "text": "query ContentAppQuery {\n  conversations {\n    id\n    messages {\n      id\n      role\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "341745bc04ec9febd4a103dc3234f059";
+(node as any).hash = "ba62926ec0c37e9616155b760b39712e";
 
 export default node;
