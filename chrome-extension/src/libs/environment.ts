@@ -11,7 +11,7 @@ import {
 export function fetchFunction(params: RequestParameters, variables: Variables) {
   const response = fetch("http://localhost:8000/graphql", {
     method: "POST",
-    headers: [["QueryWrapper-Type", "application/json"]],
+    headers: [["Content-Type", "application/json"]],
     body: JSON.stringify({
       query: params.text,
       variables,
