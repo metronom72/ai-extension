@@ -1,11 +1,15 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import MUIWrapper from "components/v1/MUIWrapper";
 import ContentArea from "components/shared/ContentArea";
 import { Stack } from "@mui/joy";
 import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
 import ContentAppSidebar from "components/shared/ContentSidebar";
-import { RelayEnvironmentProvider } from "react-relay";
+import {
+  RelayEnvironmentProvider,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay";
 import { environment } from "libs/environment";
 import graphql from "babel-plugin-relay/macro";
 import SidebarStateProvider from "../providers/SidebarStateProvider";
@@ -27,7 +31,7 @@ const Query = graphql`
 `;
 
 const Content = ({ queryReference }: { queryReference: any }) => {
-  // const data = usePreloadedQuery(Query, queryReference);
+  const data = usePreloadedQuery(Query, queryReference);
   const { isOpen } = useSidebarState();
 
   return (
@@ -57,17 +61,25 @@ const Content = ({ queryReference }: { queryReference: any }) => {
   );
 };
 
-const ContentApp = () => {
-  // const [queryReference, loadQuery] = useQueryLoader(Query);
-  // useEffect(() => {
-  //   loadQuery({});
-  // }, []);
+const QueryWrapper = () => {
+  const [queryReference, loadQuery] = useQueryLoader(Query);
+  useEffect(() => {
+    loadQuery({});
+  }, []);
 
+  if (!queryReference) {
+    return null;
+  }
+
+  return <Content queryReference={queryReference} />;
+};
+
+const ContentApp = () => {
   return (
     <MUIWrapper>
       <RelayEnvironmentProvider environment={environment}>
         <SidebarStateProvider>
-          <Content queryReference={null} />
+          <QueryWrapper />
         </SidebarStateProvider>
       </RelayEnvironmentProvider>
     </MUIWrapper>
