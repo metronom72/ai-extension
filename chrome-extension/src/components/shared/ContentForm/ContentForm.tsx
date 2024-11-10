@@ -2,6 +2,7 @@ import React, { memo, useState } from "react";
 import {
   Box,
   Divider,
+  FormControl,
   IconButton,
   Option,
   Select,
@@ -17,6 +18,7 @@ import AttachFileOutlined from "@mui/icons-material/AttachFileOutlined";
 import { useFragment } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { ContentForm_modelsFragment$key } from "components/shared/ContentForm/__generated__/ContentForm_modelsFragment.graphql";
+import useCreateConversation from "hooks/useCreateConversation";
 
 const ContentForm = ({
   queryFragmentRef,
@@ -32,6 +34,7 @@ const ContentForm = ({
     queryFragmentRef,
   );
   const [model, setModel] = useState<string | null>(null);
+  const { mutate: createConversation, loading } = useCreateConversation();
 
   return (
     <Box p={2}>
@@ -71,22 +74,24 @@ const ContentForm = ({
           <Box p={0.5} pt={0}>
             <Stack direction="row">
               <Stack direction="row">
-                <Select
-                  variant="plain"
-                  placeholder="Select Model"
-                  value={model}
-                  size="sm"
-                  slotProps={{
-                    listbox: { disablePortal: true },
-                  }}
-                  onChange={(_, value) => setModel(value)}
-                >
-                  {models.map((model) => (
-                    <Option key={model} value={model}>
-                      {model}
-                    </Option>
-                  ))}
-                </Select>
+                <FormControl error={!model}>
+                  <Select
+                    variant="plain"
+                    placeholder="Select Model"
+                    value={model}
+                    size="sm"
+                    slotProps={{
+                      listbox: { disablePortal: true },
+                    }}
+                    onChange={(_, value) => setModel(value)}
+                  >
+                    {models.map((model) => (
+                      <Option key={model} value={model}>
+                        {model}
+                      </Option>
+                    ))}
+                  </Select>
+                </FormControl>
                 <Tooltip title="Which model better for?">
                   <IconButton size="sm">
                     <HelpCenterOutlinedIcon />

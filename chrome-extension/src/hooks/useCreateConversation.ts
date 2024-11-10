@@ -26,3 +26,5 @@ export const useCreateConversation = () => {
 
   return { loading, mutate };
 };
+
+export default useCreateConversation;
