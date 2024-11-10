@@ -6,7 +6,7 @@ const appContainer = document.createElement("div");
 
 export const contentId = "briefcat-extension-root";
 
-export const sidebarWidth = 400;
+export const sidebarWidth = 600;
 
 export function setContent() {
   appContainer.id = contentId;
@@ -29,8 +29,6 @@ export function unsetOpenedSidebar() {
   document.documentElement.style.maxWidth = `${window.innerWidth}px`;
 }
 
-setContent();
-
 function renderSidebar() {
   chrome.storage.local.get(["isOpen"], (result) => {
     if (result.isOpen) {
@@ -40,6 +38,10 @@ function renderSidebar() {
     }
   });
 }
+
+setContent();
+
+renderSidebar();
 
 window.addEventListener("resize", renderSidebar);
 
