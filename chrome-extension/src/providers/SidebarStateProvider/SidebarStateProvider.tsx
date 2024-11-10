@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { setOpenedSidebar, unsetOpenedSidebar } from "../../content";
 
 export interface SidebarState {
   isOpen: boolean;
@@ -9,7 +10,7 @@ export interface SidebarStateContextType extends SidebarState {
 }
 
 export const defaultState: SidebarState = {
-  isOpen: true,
+  isOpen: false,
 };
 
 export const SidebarStateContext = createContext<
@@ -22,26 +23,33 @@ export const SidebarStateProvider = ({
   children: JSX.Element;
 }) => {
   const [state, setState] = useState<SidebarState>(defaultState);
-  const toggleOpen = () => {
-    setState((prevState) => ({ ...prevState, isOpen: !prevState.isOpen }));
-  };
+
+  useEffect(() => {
+    chrome.storage.local.get(["isOpen"], (result) => {
+      if (result.isOpen !== undefined) {
+        setState((prevState) => ({ ...prevState, isOpen: result.isOpen }));
+      }
+    });
+  }, []);
+
+  const toggleOpen = useCallback(() => {
+    const newIsOpen = !state.isOpen;
+    setState((prevState) => ({ ...prevState, isOpen: newIsOpen }));
+
+    chrome.storage.local.set({ isOpen: newIsOpen }, () => {
+      if (newIsOpen) {
+        setOpenedSidebar();
+      } else {
+        unsetOpenedSidebar();
+      }
+    });
+  }, [state, setState]);
 
   return (
     <SidebarStateContext.Provider value={{ ...state, toggleOpen }}>
       {children}
     </SidebarStateContext.Provider>
   );
-};
-
-export const useSidebarState = (): SidebarStateContextType => {
-  const context = useContext(SidebarStateContext);
-
-  if (!context) {
-    throw new Error(
-      "useSidebarState must be used within a SidebarStateProvider",
-    );
-  }
-  return context;
 };
 
 export default SidebarStateProvider;

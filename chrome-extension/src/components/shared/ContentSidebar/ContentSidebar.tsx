@@ -9,10 +9,10 @@ import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import { useSidebarState } from "../../../providers/SidebarStateProvider/SidebarStateProvider";
+import useSidebarState from "providers/SidebarStateProvider/useSidebarState";
 
 const ContentSidebar: React.FC = () => {
-  const { ...rest } = useSidebarState();
+  const { toggleOpen } = useSidebarState();
 
   return (
     <Stack>
@@ -23,7 +23,7 @@ const ContentSidebar: React.FC = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Close Sidebar">
-          <IconButton size="sm">
+          <IconButton size="sm" onClick={toggleOpen}>
             <CloseOutlined />
           </IconButton>
         </Tooltip>

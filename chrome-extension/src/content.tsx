@@ -6,8 +6,9 @@ const appContainer = document.createElement("div");
 
 export const contentId = "briefcat-extension-root";
 
-function setMaxWidth() {
-  const maxWidth = `${window.innerWidth - 600}px`;
+export const sidebarWidth = 400;
+
+export function setContent() {
   appContainer.id = contentId;
 
   appContainer.style.position = "fixed";
@@ -17,13 +18,30 @@ function setMaxWidth() {
   appContainer.style.right = "0px";
 
   appContainer.style.zIndex = "1000";
-
-  document.documentElement.style.maxWidth = maxWidth;
 }
 
-setMaxWidth();
+export function setOpenedSidebar() {
+  const mainWidth = window.innerWidth - sidebarWidth;
+  document.documentElement.style.maxWidth = `${mainWidth >= 768 ? mainWidth : window.innerWidth}px`;
+}
 
-window.addEventListener("resize", setMaxWidth);
+export function unsetOpenedSidebar() {
+  document.documentElement.style.maxWidth = `${window.innerWidth}px`;
+}
+
+setContent();
+
+function renderSidebar() {
+  chrome.storage.local.get(["isOpen"], (result) => {
+    if (result.isOpen) {
+      setOpenedSidebar();
+    } else {
+      unsetOpenedSidebar();
+    }
+  });
+}
+
+window.addEventListener("resize", renderSidebar);
 
 document.body.appendChild(appContainer);
 

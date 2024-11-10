@@ -12,7 +12,7 @@ import GradientIcon from "components/v1/GradientIcon";
 
 const ContentArea: React.FC = () => {
   return (
-    <Box sx={{ padding: 4, maxWidth: 600, margin: "0 auto" }} role="main">
+    <Box sx={{ padding: 4, margin: "0 auto" }} role="main">
       <Typography level="h4" component="h1">
         Welcome to the <GradientText>Office Assistant!</GradientText>
       </Typography>
