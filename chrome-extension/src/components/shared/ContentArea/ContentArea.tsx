@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/joy";
 import Summarize from "@mui/icons-material/Summarize";
-import Chat from "@mui/icons-material/Chat";
 import Timer from "@mui/icons-material/Timer";
 import GroupWork from "@mui/icons-material/GroupWork";
 import DateRange from "@mui/icons-material/DateRange";
@@ -21,21 +20,31 @@ const ContentArea: React.FC = () => {
       </Typography>
 
       <Box sx={{ marginTop: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
-        <AppButton startDecorator={<Summarize />}>Summarize Page</AppButton>
         <AppButton
+          size="sm"
           startDecorator={
             <GradientIcon>
-              <Chat />
+              <Summarize />
             </GradientIcon>
           }
         >
-          New Chat
+          Summarize Page
         </AppButton>
-        <AppButton startDecorator={<GroupWork />}>Relations</AppButton>
-        <AppButton startDecorator={<Timer />}>AI Timers</AppButton>
-        <AppButton startDecorator={<DateRange />}>AI Daily Planning</AppButton>
-        <AppButton endDecorator={<OpenInNewIcon />}>Knowledge Base</AppButton>
-        <AppButton endDecorator={<OpenInNewIcon />}>Your Profile</AppButton>
+        <AppButton size="sm" startDecorator={<GroupWork />}>
+          Relations
+        </AppButton>
+        <AppButton size="sm" startDecorator={<Timer />}>
+          AI Timers
+        </AppButton>
+        <AppButton size="sm" startDecorator={<DateRange />}>
+          AI Daily Planning
+        </AppButton>
+        <AppButton size="sm" endDecorator={<OpenInNewIcon />}>
+          Knowledge Base
+        </AppButton>
+        <AppButton size="sm" endDecorator={<OpenInNewIcon />}>
+          Your Profile
+        </AppButton>
       </Box>
     </Box>
   );

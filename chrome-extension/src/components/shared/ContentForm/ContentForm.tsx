@@ -43,7 +43,7 @@ const ContentForm = ({
           boxShadow: "sm",
         }}
       >
-        <Stack useFlexGap spacing={2}>
+        <Stack useFlexGap spacing={1}>
           <Stack
             justifyContent="flex-end"
             direction="row"
@@ -67,8 +67,8 @@ const ContentForm = ({
               </GradientIcon>
             </IconButton>
           </Stack>
-          <Divider />
-          <Box p={1} pt={0}>
+          <Divider sx={{ margin: 0 }} />
+          <Box p={0.5} pt={0}>
             <Stack direction="row">
               <Stack direction="row">
                 <Select
@@ -86,9 +86,8 @@ const ContentForm = ({
                       {model}
                     </Option>
                   ))}
-                  <Option value="ai-cat">Ai Cat</Option>
                 </Select>
-                <Tooltip title="Info">
+                <Tooltip title="Which model better for?">
                   <IconButton size="sm">
                     <HelpCenterOutlinedIcon />
                   </IconButton>
