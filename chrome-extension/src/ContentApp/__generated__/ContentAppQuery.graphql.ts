@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9172bc0f2264340442ee43291b11c5dc>>
+ * @generated SignedSource<<9c992e45e18413219d94a8ae252facb2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type ContentAppQuery$variables = Record<PropertyKey, never>;
 export type ContentAppQuery$data = {
   readonly conversations: ReadonlyArray<{
@@ -19,6 +20,7 @@ export type ContentAppQuery$data = {
       readonly role: string;
     }>;
   }>;
+  readonly " $fragmentSpreads": FragmentRefs<"ContentForm_modelsFragment">;
 };
 export type ContentAppQuery = {
   response: ContentAppQuery$data;
@@ -33,53 +35,58 @@ var v0 = {
   "name": "id",
   "storageKey": null
 },
-v1 = [
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "Conversation",
-    "kind": "LinkedField",
-    "name": "conversations",
-    "plural": true,
-    "selections": [
-      (v0/*: any*/),
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Message",
-        "kind": "LinkedField",
-        "name": "messages",
-        "plural": true,
-        "selections": [
-          (v0/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "role",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "content",
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
-  }
-];
+v1 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Conversation",
+  "kind": "LinkedField",
+  "name": "conversations",
+  "plural": true,
+  "selections": [
+    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Message",
+      "kind": "LinkedField",
+      "name": "messages",
+      "plural": true,
+      "selections": [
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "role",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "content",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "ContentAppQuery",
-    "selections": (v1/*: any*/),
+    "selections": [
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "ContentForm_modelsFragment"
+      },
+      (v1/*: any*/)
+    ],
     "type": "Query",
     "abstractKey": null
   },
@@ -88,19 +95,28 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "ContentAppQuery",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "models",
+        "storageKey": null
+      },
+      (v1/*: any*/)
+    ]
   },
   "params": {
-    "cacheID": "b4ac40ed680fe77b7390c6f3ee46a7de",
+    "cacheID": "77b46d6666f43438dccfd34b15422959",
     "id": null,
     "metadata": {},
     "name": "ContentAppQuery",
     "operationKind": "query",
-    "text": "query ContentAppQuery {\n  conversations {\n    id\n    messages {\n      id\n      role\n      content\n    }\n  }\n}\n"
+    "text": "query ContentAppQuery {\n  ...ContentForm_modelsFragment\n  conversations {\n    id\n    messages {\n      id\n      role\n      content\n    }\n  }\n}\n\nfragment ContentForm_modelsFragment on Query {\n  models\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ba62926ec0c37e9616155b760b39712e";
+(node as any).hash = "d7cf7db7c940545b341f9df2b35e7c27";
 
 export default node;

@@ -1,5 +1,6 @@
 import os
-from typing import List, TypedDict
+from typing import List
+
 import httpx
 
 from app.core.types import Message
@@ -22,7 +23,9 @@ class OllamaAdapter:
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{self.base_url}/tags")
             response.raise_for_status()
-            return response.json().get("models", [])
+            response_data = response.json().get("models", [])
+            model_names = [model.get("name") for model in response_data]
+            return model_names
 
     async def generate_response(self, model: str, prompt: str,
                                 stream: bool = False, response_format: str = "json") -> dict:

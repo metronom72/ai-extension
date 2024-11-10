@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import {
   Box,
   Divider,
@@ -14,8 +14,25 @@ import HelpCenterOutlinedIcon from "@mui/icons-material/HelpCenterOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import GradientIcon from "components/v1/GradientIcon";
 import AttachFileOutlined from "@mui/icons-material/AttachFileOutlined";
+import { useFragment } from "react-relay";
+import graphql from "babel-plugin-relay/macro";
+import { ContentForm_modelsFragment$key } from "components/shared/ContentForm/__generated__/ContentForm_modelsFragment.graphql";
 
-const ContentForm: React.FC = () => {
+const ContentForm = ({
+  queryFragmentRef,
+}: {
+  queryFragmentRef: ContentForm_modelsFragment$key;
+}): JSX.Element => {
+  const { models } = useFragment(
+    graphql`
+      fragment ContentForm_modelsFragment on Query {
+        models
+      }
+    `,
+    queryFragmentRef,
+  );
+  const [model, setModel] = useState<string | null>(null);
+
   return (
     <Box p={2}>
       <Sheet
@@ -57,12 +74,18 @@ const ContentForm: React.FC = () => {
                 <Select
                   variant="plain"
                   placeholder="Select Model"
-                  value="ai-cat"
+                  value={model}
                   size="sm"
                   slotProps={{
                     listbox: { disablePortal: true },
                   }}
+                  onChange={(_, value) => setModel(value)}
                 >
+                  {models.map((model) => (
+                    <Option key={model} value={model}>
+                      {model}
+                    </Option>
+                  ))}
                   <Option value="ai-cat">Ai Cat</Option>
                 </Select>
                 <Tooltip title="Info">

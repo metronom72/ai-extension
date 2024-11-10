@@ -6,6 +6,7 @@ import ContentHeader from "components/shared/ContentHeader";
 import ContentForm from "components/shared/ContentForm";
 import ContentAppSidebar from "components/shared/ContentSidebar";
 import {
+  PreloadedQuery,
   RelayEnvironmentProvider,
   usePreloadedQuery,
   useQueryLoader,
@@ -15,9 +16,11 @@ import graphql from "babel-plugin-relay/macro";
 import SidebarStateProvider from "../providers/SidebarStateProvider";
 import useSidebarState from "providers/SidebarStateProvider/useSidebarState";
 import { sidebarWidth } from "content";
+import { ContentAppQuery } from "./__generated__/ContentAppQuery.graphql";
 
 const Query = graphql`
   query ContentAppQuery {
+    ...ContentForm_modelsFragment
     conversations {
       id
       messages {
@@ -30,8 +33,12 @@ const Query = graphql`
   }
 `;
 
-const Content = ({ queryReference }: { queryReference: any }) => {
-  const data = usePreloadedQuery(Query, queryReference);
+const Content = ({
+  queryReference,
+}: {
+  queryReference: PreloadedQuery<ContentAppQuery>;
+}): JSX.Element => {
+  const data = usePreloadedQuery<ContentAppQuery>(Query, queryReference);
   const { isOpen } = useSidebarState();
 
   return (
@@ -54,27 +61,27 @@ const Content = ({ queryReference }: { queryReference: any }) => {
       >
         <ContentHeader />
         <ContentArea />
-        <ContentForm />
+        <ContentForm queryFragmentRef={data} />
       </Stack>
       <ContentAppSidebar />
     </Stack>
   );
 };
 
-const QueryWrapper = () => {
-  const [queryReference, loadQuery] = useQueryLoader(Query);
+const QueryWrapper = (): JSX.Element => {
+  const [queryReference, loadQuery] = useQueryLoader<ContentAppQuery>(Query);
   useEffect(() => {
     loadQuery({});
   }, []);
 
   if (!queryReference) {
-    return null;
+    return <div />;
   }
 
   return <Content queryReference={queryReference} />;
 };
 
-const ContentApp = () => {
+const ContentApp = (): JSX.Element => {
   return (
     <MUIWrapper>
       <RelayEnvironmentProvider environment={environment}>

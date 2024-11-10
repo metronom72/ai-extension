@@ -56,8 +56,15 @@ def get_adapter_instance(adapter: AdapterEnum):
 @strawberry.type
 class Query:
     @strawberry.field
-    async def list_models(self, adapter: AdapterEnum) -> List[str]:
-        return await get_adapter_instance(adapter).models()
+    async def models(self, adapter: Optional[AdapterEnum] = None) -> List[str]:
+        if adapter:
+            return await get_adapter_instance(adapter).models()
+        else:
+            models_list = []
+            for adapter in AdapterEnum:
+                adapter_models = await get_adapter_instance(adapter).models()
+                models_list.append(adapter_models)
+            return [item for sublist in models_list for item in sublist]
 
     @strawberry.field
     def conversation(self, id: strawberry.ID) -> Optional[Conversation]:

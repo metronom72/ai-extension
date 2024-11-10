@@ -1,7 +1,14 @@
+enum AdapterEnum {
+  OLLAMA
+  NVIDIA
+}
+
 type Conversation implements Node {
   """The Globally Unique ID of this object"""
   id: GlobalID!
   messages: [Message!]!
+  model: String!
+  adapter: AdapterEnum!
 }
 
 """
@@ -18,8 +25,8 @@ type Message implements Node {
 
 type Mutation {
   downloadModel(modelName: String!): String!
-  startConversation(convId: String!): String!
-  addMessage(convId: String!, query: QueryModel!): String!
+  startConversation(convId: String!, model: String!, adapter: AdapterEnum!): Conversation!
+  addMessage(convId: String!, query: QueryModel!): Conversation!
 }
 
 """An object with a Globally Unique ID"""
@@ -29,10 +36,9 @@ interface Node {
 }
 
 type Query {
-  listModels: [String!]!
+  models(adapter: AdapterEnum): [String!]!
   conversation(id: ID!): Conversation
   conversations: [Conversation!]!
-  generateText(query: QueryModel!): String!
 }
 
 input QueryModel {

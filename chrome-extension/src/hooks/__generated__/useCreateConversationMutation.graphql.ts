@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<64a041b18f700c94e36cabe519e00298>>
+ * @generated SignedSource<<2b2bc1d1593eadb7cc5186c497981c18>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,11 +9,22 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from 'relay-runtime';
+export type AdapterEnum = "NVIDIA" | "OLLAMA" | "%future added value";
 export type useCreateConversationMutation$variables = {
+  adapter: AdapterEnum;
   conversationId: string;
+  model: string;
 };
 export type useCreateConversationMutation$data = {
-  readonly startConversation: string;
+  readonly startConversation: {
+    readonly adapter: AdapterEnum;
+    readonly id: any;
+    readonly messages: ReadonlyArray<{
+      readonly content: string;
+      readonly id: any;
+    }>;
+    readonly model: string;
+  };
 };
 export type useCreateConversationMutation = {
   response: useCreateConversationMutation$data;
@@ -21,56 +32,127 @@ export type useCreateConversationMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "conversationId"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "adapter"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "conversationId"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "model"
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = [
   {
     "alias": null,
     "args": [
       {
         "kind": "Variable",
+        "name": "adapter",
+        "variableName": "adapter"
+      },
+      {
+        "kind": "Variable",
         "name": "convId",
         "variableName": "conversationId"
+      },
+      {
+        "kind": "Variable",
+        "name": "model",
+        "variableName": "model"
       }
     ],
-    "kind": "ScalarField",
+    "concreteType": "Conversation",
+    "kind": "LinkedField",
     "name": "startConversation",
+    "plural": false,
+    "selections": [
+      (v3/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "model",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "adapter",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Message",
+        "kind": "LinkedField",
+        "name": "messages",
+        "plural": true,
+        "selections": [
+          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "content",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ],
     "storageKey": null
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateConversationMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v4/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "useCreateConversationMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v4/*: any*/)
   },
   "params": {
-    "cacheID": "1492b12eea5f463a6f49d87dea75fbc6",
+    "cacheID": "e5f0cf29dd5b2452814369ded3e458d0",
     "id": null,
     "metadata": {},
     "name": "useCreateConversationMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateConversationMutation(\n  $conversationId: String!\n) {\n  startConversation(convId: $conversationId)\n}\n"
+    "text": "mutation useCreateConversationMutation(\n  $conversationId: String!\n  $model: String!\n  $adapter: AdapterEnum!\n) {\n  startConversation(convId: $conversationId, model: $model, adapter: $adapter) {\n    id\n    model\n    adapter\n    messages {\n      id\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e106d4018fba774bdab758a355736fd8";
+(node as any).hash = "ab84b92f28849c76f5c2b73f95fba243";
 
 export default node;
