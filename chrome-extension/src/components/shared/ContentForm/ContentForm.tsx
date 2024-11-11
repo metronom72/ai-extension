@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import {
   Box,
   Divider,
@@ -19,9 +19,10 @@ import AttachFileOutlined from "@mui/icons-material/AttachFileOutlined";
 import { useFragment } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { ContentForm_modelsFragment$key } from "components/shared/ContentForm/__generated__/ContentForm_modelsFragment.graphql";
-import useCreateConversation from "hooks/useCreateConversation";
 import { AdapterEnum } from "hooks/__generated__/useCreateConversationMutation.graphql";
 import { useForm } from "react-hook-form";
+import useCreateConversation from "../../../hooks/useCreateConversation";
+import { v4 } from "uuid";
 
 interface IFormInput {
   message: string;
@@ -39,19 +40,9 @@ const ContentForm = ({
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue,
   } = useForm<IFormInput>({});
-  const messageField = register("message", { required: true });
-  const modelField = register("model", { required: true });
-  const adapterField = register("adapter", { required: true });
-
-  console.log(register("message", { required: true }));
-
-  console.log(register("model", { required: true }));
-
-  console.log(register("adapter", { required: true }));
-
-  console.log(errors, getValues());
-
+  const values = getValues();
   const { models } = useFragment(
     graphql`
       fragment ContentForm_modelsFragment on Query {
@@ -60,14 +51,21 @@ const ContentForm = ({
     `,
     queryFragmentRef,
   );
-  const [model, setModel] = useState<string | null>(null);
   const { mutate: createConversation, loading } = useCreateConversation();
 
   return (
     <Box
       p={2}
       component="form"
-      onSubmit={handleSubmit((...rest) => console.log(rest))}
+      onSubmit={handleSubmit((data) =>
+        createConversation({
+          variables: {
+            conversationId: v4(),
+            model: data.model,
+            adapter: data.adapter,
+          },
+        }),
+      )}
     >
       <Sheet
         variant="outlined"
@@ -92,8 +90,9 @@ const ContentForm = ({
                   height: "100%",
                   display: "block",
                 }}
+                value={values.message}
                 maxRows={6}
-                onChange={(event) => messageField.onChange(event)}
+                onChange={(event) => setValue("message", event.target.value)}
               />
               {errors.message?.message && (
                 <FormHelperText>{errors.message?.message}</FormHelperText>
@@ -118,16 +117,13 @@ const ContentForm = ({
                   <Select
                     variant="plain"
                     placeholder="Select Model"
-                    value={model}
+                    value={values.model}
                     size="sm"
                     slotProps={{
                       listbox: { disablePortal: true },
                     }}
-                    onChange={(event, value) =>
-                      modelField.onChange({
-                        target: { value },
-                        type: event?.type,
-                      })
+                    onChange={(_, value) =>
+                      value ? setValue("model", value) : null
                     }
                   >
                     {models.map((model) => (
