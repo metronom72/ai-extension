@@ -3,6 +3,7 @@ import {
   Box,
   Divider,
   FormControl,
+  FormHelperText,
   IconButton,
   Option,
   Select,
@@ -19,12 +20,38 @@ import { useFragment } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { ContentForm_modelsFragment$key } from "components/shared/ContentForm/__generated__/ContentForm_modelsFragment.graphql";
 import useCreateConversation from "hooks/useCreateConversation";
+import { AdapterEnum } from "hooks/__generated__/useCreateConversationMutation.graphql";
+import { useForm } from "react-hook-form";
+
+interface IFormInput {
+  message: string;
+  model: string;
+  adapter: AdapterEnum;
+}
 
 const ContentForm = ({
   queryFragmentRef,
 }: {
   queryFragmentRef: ContentForm_modelsFragment$key;
 }): JSX.Element => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<IFormInput>({});
+  const messageField = register("message", { required: true });
+  const modelField = register("model", { required: true });
+  const adapterField = register("adapter", { required: true });
+
+  console.log(register("message", { required: true }));
+
+  console.log(register("model", { required: true }));
+
+  console.log(register("adapter", { required: true }));
+
+  console.log(errors, getValues());
+
   const { models } = useFragment(
     graphql`
       fragment ContentForm_modelsFragment on Query {
@@ -37,7 +64,11 @@ const ContentForm = ({
   const { mutate: createConversation, loading } = useCreateConversation();
 
   return (
-    <Box p={2}>
+    <Box
+      p={2}
+      component="form"
+      onSubmit={handleSubmit((...rest) => console.log(rest))}
+    >
       <Sheet
         variant="outlined"
         sx={{
@@ -52,19 +83,28 @@ const ContentForm = ({
             direction="row"
             alignItems="flex-end"
           >
-            <Textarea
-              variant="plain"
-              minRows={1}
-              size="sm"
-              sx={{ width: "100%", paddingTop: 2, paddingBottom: 2 }}
-              maxRows={6}
-            />
+            <FormControl error={Boolean(errors.message)} sx={{ width: "100%" }}>
+              <Textarea
+                variant="plain"
+                size="sm"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "block",
+                }}
+                maxRows={6}
+                onChange={(event) => messageField.onChange(event)}
+              />
+              {errors.message?.message && (
+                <FormHelperText>{errors.message?.message}</FormHelperText>
+              )}
+            </FormControl>
             <Tooltip title="Attach file">
               <IconButton size="sm">
                 <AttachFileOutlined />
               </IconButton>
             </Tooltip>
-            <IconButton size="sm">
+            <IconButton size="sm" type="submit">
               <GradientIcon>
                 <SendIcon />
               </GradientIcon>
@@ -74,7 +114,7 @@ const ContentForm = ({
           <Box p={0.5} pt={0}>
             <Stack direction="row">
               <Stack direction="row">
-                <FormControl error={!model}>
+                <FormControl error={Boolean(errors.model)}>
                   <Select
                     variant="plain"
                     placeholder="Select Model"
@@ -83,7 +123,12 @@ const ContentForm = ({
                     slotProps={{
                       listbox: { disablePortal: true },
                     }}
-                    onChange={(_, value) => setModel(value)}
+                    onChange={(event, value) =>
+                      modelField.onChange({
+                        target: { value },
+                        type: event?.type,
+                      })
+                    }
                   >
                     {models.map((model) => (
                       <Option key={model} value={model}>
@@ -91,6 +136,9 @@ const ContentForm = ({
                       </Option>
                     ))}
                   </Select>
+                  {errors.model?.message && (
+                    <FormHelperText>{errors.model?.message}</FormHelperText>
+                  )}
                 </FormControl>
                 <Tooltip title="Which model better for?">
                   <IconButton size="sm">
