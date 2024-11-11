@@ -40,6 +40,12 @@ class Conversation(Node):
 
 
 @strawberry.type
+class Model:
+    model: str
+    adapter: AdapterEnum
+
+
+@strawberry.type
 class MessageConnection(Connection[Message]):
     nodes: List[Message]
 
@@ -56,15 +62,17 @@ def get_adapter_instance(adapter: AdapterEnum):
 @strawberry.type
 class Query:
     @strawberry.field
-    async def models(self, adapter: Optional[AdapterEnum] = None) -> List[str]:
+    async def models(self, adapter: Optional[AdapterEnum] = None) -> List[Model]:
         if adapter:
-            return await get_adapter_instance(adapter).models()
+            adapter_instance = get_adapter_instance(adapter)
+            return [Model(model=model, adapter=adapter) for model in await adapter_instance.models()]
         else:
             models_list = []
             for adapter in AdapterEnum:
-                adapter_models = await get_adapter_instance(adapter).models()
-                models_list.append(adapter_models)
-            return [item for sublist in models_list for item in sublist]
+                adapter_instance = get_adapter_instance(adapter)
+                adapter_models = await adapter_instance.models()
+                models_list.extend(Model(model=model, adapter=adapter) for model in adapter_models)
+            return models_list
 
     @strawberry.field
     def conversation(self, id: strawberry.ID) -> Optional[Conversation]:

@@ -36,7 +36,6 @@ const ContentForm = ({
   queryFragmentRef: ContentForm_modelsFragment$key;
 }): JSX.Element => {
   const {
-    register,
     handleSubmit,
     formState: { errors },
     getValues,
@@ -46,7 +45,10 @@ const ContentForm = ({
   const { models } = useFragment(
     graphql`
       fragment ContentForm_modelsFragment on Query {
-        models
+        models {
+          model
+          adapter
+        }
       }
     `,
     queryFragmentRef,
@@ -122,13 +124,22 @@ const ContentForm = ({
                     slotProps={{
                       listbox: { disablePortal: true },
                     }}
-                    onChange={(_, value) =>
-                      value ? setValue("model", value) : null
-                    }
+                    onChange={(_, value) => {
+                      if (value) {
+                        setValue("model", value);
+
+                        const targetModel = models.find(
+                          ({ model }) => model === value,
+                        );
+                        if (targetModel) {
+                          setValue("adapter", targetModel.adapter);
+                        }
+                      }
+                    }}
                   >
                     {models.map((model) => (
-                      <Option key={model} value={model}>
-                        {model}
+                      <Option key={model.model} value={model.model}>
+                        {model.model}
                       </Option>
                     ))}
                   </Select>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3551123e43178e7f2d6e646220ae087c>>
+ * @generated SignedSource<<cf5853f5d3a0a7dea29d3eee89d141f6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,9 +9,13 @@
 // @ts-nocheck
 
 import { ReaderFragment } from 'relay-runtime';
+export type AdapterEnum = "NVIDIA" | "OLLAMA" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type ContentForm_modelsFragment$data = {
-  readonly models: ReadonlyArray<string>;
+  readonly models: ReadonlyArray<{
+    readonly adapter: AdapterEnum;
+    readonly model: string;
+  }>;
   readonly " $fragmentType": "ContentForm_modelsFragment";
 };
 export type ContentForm_modelsFragment$key = {
@@ -28,8 +32,26 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
+      "concreteType": "Model",
+      "kind": "LinkedField",
       "name": "models",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "model",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "adapter",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     }
   ],
@@ -37,6 +59,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "506da32bf195d00fab97d10fc7dc2d5c";
+(node as any).hash = "8e16025196843330d7a2f01c6836d940";
 
 export default node;

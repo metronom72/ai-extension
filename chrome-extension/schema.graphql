@@ -23,6 +23,11 @@ type Message implements Node {
   content: String!
 }
 
+type Model {
+  model: String!
+  adapter: AdapterEnum!
+}
+
 type Mutation {
   downloadModel(modelName: String!): String!
   startConversation(convId: String!, model: String!, adapter: AdapterEnum!): Conversation!
@@ -36,7 +41,7 @@ interface Node {
 }
 
 type Query {
-  models(adapter: AdapterEnum): [String!]!
+  models(adapter: AdapterEnum = null): [Model!]!
   conversation(id: ID!): Conversation
   conversations: [Conversation!]!
 }
