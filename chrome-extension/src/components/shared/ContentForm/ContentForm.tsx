@@ -61,11 +61,9 @@ const ContentForm = ({
       component="form"
       onSubmit={handleSubmit((data) =>
         createConversation({
-          variables: {
-            conversationId: v4(),
-            model: data.model,
-            adapter: data.adapter,
-          },
+          conversationId: v4(),
+          model: data.model,
+          adapter: data.adapter,
         }),
       )}
     >
