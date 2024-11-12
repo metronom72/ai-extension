@@ -4,9 +4,12 @@ import { sidebarWidth } from "../content";
 import ContentAppSidebar from "components/shared/ContentSidebar";
 import React, { memo } from "react";
 import InitialScene from "scenes/InitialScene";
+import useCurrentConversation from "../providers/CurrentConversationProvider/useCurrentConversation";
+import ConversationScene from "scenes/ConversationScene";
 
 const SceneWrapper = (): JSX.Element => {
   const { isOpen } = useSidebarState();
+  const { conversationId } = useCurrentConversation();
 
   return (
     <Stack
@@ -26,7 +29,7 @@ const SceneWrapper = (): JSX.Element => {
           justifyContent: "space-between",
         }}
       >
-        <InitialScene />
+        {conversationId ? <ConversationScene /> : <InitialScene />}
       </Stack>
       <ContentAppSidebar />
     </Stack>
