@@ -12,6 +12,7 @@ const useSidebarState = (): SidebarStateContextType => {
       "useSidebarState must be used within a SidebarStateProvider",
     );
   }
+
   return context;
 };
 
