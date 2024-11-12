@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2f33afb996267b86de17aeca5a09b4e5>>
+ * @generated SignedSource<<cb96ab8dda5bc1322d9cb1edc4834541>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,9 +11,6 @@
 import { ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type InitialScene_QueryFragment$data = {
-  readonly conversations: ReadonlyArray<{
-    readonly id: any;
-  }>;
   readonly " $fragmentSpreads": FragmentRefs<"ContentForm_modelsFragment">;
   readonly " $fragmentType": "InitialScene_QueryFragment";
 };
@@ -32,30 +29,12 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "ContentForm_modelsFragment"
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Conversation",
-      "kind": "LinkedField",
-      "name": "conversations",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "id",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
     }
   ],
   "type": "Query",
   "abstractKey": null
 };
 
-(node as any).hash = "8375432ccacad02f11e9162de061e9c7";
+(node as any).hash = "2d3137cf2705e8f03531aea90ef76b64";
 
 export default node;

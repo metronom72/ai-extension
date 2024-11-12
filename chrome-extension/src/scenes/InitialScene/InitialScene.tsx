@@ -23,9 +23,6 @@ const InitialScene = ({
     graphql`
       fragment InitialScene_QueryFragment on Query {
         ...ContentForm_modelsFragment
-        conversations {
-          id
-        }
       }
     `,
     query,

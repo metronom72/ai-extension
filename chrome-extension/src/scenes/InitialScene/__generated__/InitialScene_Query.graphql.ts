@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b6a8bdd8f119d18dcdc1d5c2abd7a748>>
+ * @generated SignedSource<<d647553c0511bca8778169607f44acf3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -65,34 +65,16 @@ const node: ConcreteRequest = {
           }
         ],
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "Conversation",
-        "kind": "LinkedField",
-        "name": "conversations",
-        "plural": true,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "92474a9c1d57daf2f29746a920fea582",
+    "cacheID": "07f47791e974848ea30b9624986dec9c",
     "id": null,
     "metadata": {},
     "name": "InitialScene_Query",
     "operationKind": "query",
-    "text": "query InitialScene_Query {\n  ...InitialScene_QueryFragment\n}\n\nfragment ContentForm_modelsFragment on Query {\n  models {\n    model\n    adapter\n  }\n}\n\nfragment InitialScene_QueryFragment on Query {\n  ...ContentForm_modelsFragment\n  conversations {\n    id\n  }\n}\n"
+    "text": "query InitialScene_Query {\n  ...InitialScene_QueryFragment\n}\n\nfragment ContentForm_modelsFragment on Query {\n  models {\n    model\n    adapter\n  }\n}\n\nfragment InitialScene_QueryFragment on Query {\n  ...ContentForm_modelsFragment\n}\n"
   }
 };
 
