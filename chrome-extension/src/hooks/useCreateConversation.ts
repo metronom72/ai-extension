@@ -5,6 +5,7 @@ import {
   useCreateConversationMutation,
 } from "./__generated__/useCreateConversationMutation.graphql";
 import { useCallback, useState } from "react";
+import useCurrentConversation from "../providers/CurrentConversationProvider/useCurrentConversation";
 
 export const useCreateConversation = () => {
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,7 @@ export const useCreateConversation = () => {
       }
     `,
   );
-
+  const { setConversationId } = useCurrentConversation();
   const mutate = useCallback(
     ({
       conversationId,
@@ -49,6 +50,8 @@ export const useCreateConversation = () => {
         variables: { conversationId, model, adapter },
         onCompleted: (data) => {
           setLoading(false);
+
+          setConversationId(data.startConversation.id);
         },
       });
     },
