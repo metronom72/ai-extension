@@ -4,14 +4,15 @@ import { Children, cloneElement, memo, ReactElement, useEffect } from "react";
 const QueryWrapper = ({
   children,
   Query,
+  ...props
 }: {
   children: ReactElement | ReactElement[];
   Query: GraphQLTaggedNode;
-}): JSX.Element => {
+} & Record<string, any>): JSX.Element => {
   const [queryReference, loadQuery] = useQueryLoader(Query);
 
   useEffect(() => {
-    loadQuery({});
+    loadQuery({ ...props });
   }, []);
 
   if (!queryReference) {
@@ -19,7 +20,7 @@ const QueryWrapper = ({
   }
 
   const components = Children.map(children, (child) =>
-    cloneElement(child, { queryReference }),
+    cloneElement(child, { queryReference, ...props }),
   );
 
   return <>{components}</>;

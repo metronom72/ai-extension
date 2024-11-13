@@ -1,5 +1,4 @@
 import enum
-import uuid
 from typing import List, Dict, Optional
 
 import strawberry
@@ -7,6 +6,7 @@ from strawberry.relay import Node, Connection
 
 from app.adapters.nvidia_adapter import NvidiaAdapter
 from app.adapters.ollama_adapter import OllamaAdapter
+from app.services.messages_service import MessagesService
 
 conversations: Dict[str, "Conversation"] = {}
 
@@ -22,6 +22,7 @@ class QueryModel:
     prompt: str
     model: str = "llama2"
     format: Optional[str] = None
+    role: Optional[str] = None
 
 
 @strawberry.type
@@ -93,12 +94,16 @@ class Mutation:
         return f"Model {model_name} downloaded successfully"
 
     @strawberry.mutation
-    def start_conversation(self, conv_id: str, model: str, adapter: AdapterEnum) -> Conversation:
+    async def start_conversation(self, conv_id: str, model: str, adapter: AdapterEnum,
+                                 initial_context: str) -> Conversation:
         if conv_id in conversations:
             raise ValueError("Conversation ID already exists")
         conversation = Conversation(id=conv_id, messages=[],
                                     model=model, adapter=adapter)
         conversations[conv_id] = conversation
+
+        await MessagesService().add_message(conversation=conversation,
+                                            query=QueryModel(prompt=initial_context, role="web_page", model=model))
         return conversation
 
     @strawberry.mutation
@@ -107,22 +112,8 @@ class Mutation:
             raise ValueError("Conversation not found")
 
         conversation = conversations[conv_id]
-        conversation.messages.append(Message(role="user", content=query.prompt, id=uuid.uuid4()))
 
-        adapter = get_adapter_instance(conversation.adapter)
-
-        messages = [
-            {"role": message.role, "content": message.content}
-            for message in conversation.messages
-        ]
-
-        generated_text = await adapter.generate_chat_response(model=query.model, messages=messages,
-                                                              stream=False, response_format=query.format)
-
-        message = Message(role="assistant", content=generated_text, id=uuid.uuid4())
-
-        conversation.messages.append(message)
-        return conversation
+        return await MessagesService().add_message(conversation=conversation, query=query)
 
 
 schema = strawberry.Schema(query=Query, mutation=Mutation, types=[Conversation, Message])

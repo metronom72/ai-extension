@@ -1,13 +1,13 @@
 import json
 import os
-from typing import List, Any
+from typing import List
+
 import httpx
 from colorama import Fore
 from httpx import HTTPStatusError, RequestError
 
-from app.core import config
 from app.core.config import settings
-from app.core.model_not_found_error import ModelNotActiveError
+from app.core.errors.model_not_found_error import ModelNotActiveError
 from app.core.types import Message
 
 
@@ -207,7 +207,7 @@ class NvidiaAdapter:
                 "frequency_penalty": 0,
                 "presence_penalty": 0,
             },
-            
+
             "google/gemma-7b": f"{self.base_url}/chat/completions",
             "google/gemma-2-2b-it": f"{self.base_url}/chat/completions",
             "google/gemma-2-9b-it": f"{self.base_url}/chat/completions",
