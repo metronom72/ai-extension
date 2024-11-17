@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2b2bc1d1593eadb7cc5186c497981c18>>
+ * @generated SignedSource<<3e25f6d81e306fe6dc08a52c8ea48a36>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,6 +13,7 @@ export type AdapterEnum = "NVIDIA" | "OLLAMA" | "%future added value";
 export type useCreateConversationMutation$variables = {
   adapter: AdapterEnum;
   conversationId: string;
+  initialContent: string;
   model: string;
 };
 export type useCreateConversationMutation$data = {
@@ -45,16 +46,21 @@ v1 = {
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "model"
+  "name": "initialContent"
 },
 v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "model"
+},
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = [
+v5 = [
   {
     "alias": null,
     "args": [
@@ -70,6 +76,11 @@ v4 = [
       },
       {
         "kind": "Variable",
+        "name": "initialContext",
+        "variableName": "initialContent"
+      },
+      {
+        "kind": "Variable",
         "name": "model",
         "variableName": "model"
       }
@@ -79,7 +90,7 @@ v4 = [
     "name": "startConversation",
     "plural": false,
     "selections": [
-      (v3/*: any*/),
+      (v4/*: any*/),
       {
         "alias": null,
         "args": null,
@@ -102,7 +113,7 @@ v4 = [
         "name": "messages",
         "plural": true,
         "selections": [
-          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -122,12 +133,13 @@ return {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/)
+      (v2/*: any*/),
+      (v3/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
     "name": "useCreateConversationMutation",
-    "selections": (v4/*: any*/),
+    "selections": (v5/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -135,24 +147,25 @@ return {
   "operation": {
     "argumentDefinitions": [
       (v1/*: any*/),
-      (v2/*: any*/),
-      (v0/*: any*/)
+      (v3/*: any*/),
+      (v0/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Operation",
     "name": "useCreateConversationMutation",
-    "selections": (v4/*: any*/)
+    "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "e5f0cf29dd5b2452814369ded3e458d0",
+    "cacheID": "363a8094289a792efcd5cb05dd305d5d",
     "id": null,
     "metadata": {},
     "name": "useCreateConversationMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateConversationMutation(\n  $conversationId: String!\n  $model: String!\n  $adapter: AdapterEnum!\n) {\n  startConversation(convId: $conversationId, model: $model, adapter: $adapter) {\n    id\n    model\n    adapter\n    messages {\n      id\n      content\n    }\n  }\n}\n"
+    "text": "mutation useCreateConversationMutation(\n  $conversationId: String!\n  $model: String!\n  $adapter: AdapterEnum!\n  $initialContent: String!\n) {\n  startConversation(convId: $conversationId, model: $model, adapter: $adapter, initialContext: $initialContent) {\n    id\n    model\n    adapter\n    messages {\n      id\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ab84b92f28849c76f5c2b73f95fba243";
+(node as any).hash = "5de76a918f16e22514ac794894d4a053";
 
 export default node;

@@ -64,6 +64,7 @@ const ContentForm = ({
           conversationId: v4(),
           model: data.model,
           adapter: data.adapter,
+          initialContent: "",
         }),
       )}
     >

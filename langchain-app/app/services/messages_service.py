@@ -1,13 +1,25 @@
 import uuid
 
-from app.graphql_schema.schema import QueryModel, Conversation, Message, get_adapter_instance
+from app.adapters.nvidia_adapter import NvidiaAdapter
+from app.adapters.ollama_adapter import OllamaAdapter
+from app.graphql_schema.schema import Conversation, PromptInput, AdapterEnum, Message
 
 
 class MessagesService:
-    async def add_message(self, conversation: Conversation, query: QueryModel):
-        conversation.messages.append(Message(role="user", content=query.prompt, id=uuid.uuid4()))
+    @staticmethod
+    def get_adapter_instance(adapter: AdapterEnum):
+        if adapter == AdapterEnum.OLLAMA:
+            return OllamaAdapter()
+        elif adapter == AdapterEnum.NVIDIA:
+            return NvidiaAdapter()
+        else:
+            raise ValueError(f"Adapter '{adapter}' not supported")
 
-        adapter = get_adapter_instance(conversation.adapter)
+    @staticmethod
+    async def add_message(conversation: Conversation, query: PromptInput):
+        conversation.messages.append(Message(role=query.role, content=query.prompt, id=uuid.uuid4()))
+
+        adapter = MessagesService.get_adapter_instance(conversation.adapter)
 
         messages = [
             {"role": message.role, "content": message.content}

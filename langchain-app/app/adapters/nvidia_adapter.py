@@ -302,7 +302,7 @@ class NvidiaAdapter:
             payload["messages"] = messages
         else:
             payload["prompt"] = " ".join([message["content"] for message in messages])
-
+ 
         if response_format:
             payload["response_format"] = response_format
         return payload

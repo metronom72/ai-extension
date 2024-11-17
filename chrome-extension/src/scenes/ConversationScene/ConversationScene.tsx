@@ -43,7 +43,7 @@ const WrappedScene = () => {
   return (
     <QueryWrapper Query={Query} conversationId={conversationId}>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/*  @ts-ignore */}
+      {/* @ts-ignore */}
       <ConversationScene />
     </QueryWrapper>
   );

@@ -30,8 +30,8 @@ type Model {
 
 type Mutation {
   downloadModel(modelName: String!): String!
-  startConversation(convId: String!, model: String!, adapter: AdapterEnum!): Conversation!
-  addMessage(convId: String!, query: QueryModel!): Conversation!
+  startConversation(convId: String!, model: String!, adapter: AdapterEnum!, initialContext: String!): Conversation!
+  addMessage(convId: String!, query: PromptInput!): Conversation!
 }
 
 """An object with a Globally Unique ID"""
@@ -40,14 +40,16 @@ interface Node {
   id: GlobalID!
 }
 
+input PromptInput {
+  prompt: String!
+  model: String!
+  adapter: AdapterEnum!
+  format: String = null
+  role: String = null
+}
+
 type Query {
   models(adapter: AdapterEnum = null): [Model!]!
   conversation(id: ID!): Conversation
   conversations: [Conversation!]!
-}
-
-input QueryModel {
-  prompt: String!
-  model: String! = "llama2"
-  format: String = null
 }

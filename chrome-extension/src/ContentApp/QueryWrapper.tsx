@@ -16,7 +16,7 @@ const QueryWrapper = ({
   }, []);
 
   if (!queryReference) {
-    return <div />;
+    return <div>Loading...</div>;
   }
 
   const components = Children.map(children, (child) =>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<b7665e9ae2cf6939b683ac892d8dc49f>>
+ * @generated SignedSource<<ec3bcf60ee3d225377c5fc4bca7c9fb4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,14 +10,16 @@
 
 import { ConcreteRequest } from 'relay-runtime';
 export type AdapterEnum = "NVIDIA" | "OLLAMA" | "%future added value";
-export type QueryModel = {
+export type PromptInput = {
+  adapter: AdapterEnum;
   format?: string | null | undefined;
-  model?: string;
+  model: string;
   prompt: string;
+  role?: string | null | undefined;
 };
 export type useAddMessageMutation$variables = {
   conversationId: string;
-  query: QueryModel;
+  query: PromptInput;
 };
 export type useAddMessageMutation$data = {
   readonly addMessage: {
@@ -131,16 +133,16 @@ return {
     "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "f612b3b682fe161981265cfcb882f9f2",
+    "cacheID": "0b36be888d5ab364652018c5e4aaea74",
     "id": null,
     "metadata": {},
     "name": "useAddMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation useAddMessageMutation(\n  $conversationId: String!\n  $query: QueryModel!\n) {\n  addMessage(convId: $conversationId, query: $query) {\n    id\n    model\n    adapter\n    messages {\n      id\n      content\n    }\n  }\n}\n"
+    "text": "mutation useAddMessageMutation(\n  $conversationId: String!\n  $query: PromptInput!\n) {\n  addMessage(convId: $conversationId, query: $query) {\n    id\n    model\n    adapter\n    messages {\n      id\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d176f1ce951a94b4a2021e428aa7e7d7";
+(node as any).hash = "4893fea546e0594a81f60914852d3ebb";
 
 export default node;

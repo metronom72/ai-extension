@@ -1,17 +1,14 @@
 import { useMutation } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { useCallback, useState } from "react";
-import {
-  QueryModel,
-  useAddMessageMutation,
-} from "./__generated__/useAddMessageMutation.graphql";
+import { useAddMessageMutation } from "./__generated__/useAddMessageMutation.graphql";
 
 export const useAddMessage = () => {
   const [loading, setLoading] = useState(false);
   const [addMessage] = useMutation<useAddMessageMutation>(graphql`
     mutation useAddMessageMutation(
       $conversationId: String!
-      $query: QueryModel!
+      $query: PromptInput!
     ) {
       addMessage(convId: $conversationId, query: $query) {
         id

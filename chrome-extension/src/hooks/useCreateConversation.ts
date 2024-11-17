@@ -16,11 +16,13 @@ export const useCreateConversation = () => {
         $conversationId: String!
         $model: String!
         $adapter: AdapterEnum!
+        $initialContent: String!
       ) {
         startConversation(
           convId: $conversationId
           model: $model
           adapter: $adapter
+          initialContext: $initialContent
         ) {
           id
           model
@@ -39,15 +41,17 @@ export const useCreateConversation = () => {
       conversationId,
       model,
       adapter,
+      initialContent,
     }: {
       conversationId: string;
       model: string;
       adapter: AdapterEnum;
+      initialContent: string;
     }) => {
       setLoading(true);
 
       createConversation({
-        variables: { conversationId, model, adapter },
+        variables: { conversationId, model, adapter, initialContent },
         onCompleted: (data) => {
           setLoading(false);
 
