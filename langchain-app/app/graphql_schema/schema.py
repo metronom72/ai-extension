@@ -48,7 +48,7 @@ class Mutation:
             raise ValueError("Conversation ID already exists")
         conversation = Conversation(id=conv_id, messages=[],
                                     model=model, adapter=adapter,
-                                    initial_content=initial_content)
+                                    initial_content=initial_context)
         conversations[conv_id] = conversation
         return conversation
 
