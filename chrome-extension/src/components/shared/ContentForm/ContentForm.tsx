@@ -23,6 +23,8 @@ import { AdapterEnum } from "hooks/__generated__/useCreateConversationMutation.g
 import { useForm } from "react-hook-form";
 import useCreateConversation from "../../../hooks/useCreateConversation";
 import { v4 } from "uuid";
+import getInnerText from "../../../libs/getInnerText";
+import { contentId } from "../../../content";
 
 interface IFormInput {
   message: string;
@@ -64,7 +66,7 @@ const ContentForm = ({
           conversationId: v4(),
           model: data.model,
           adapter: data.adapter,
-          initialContent: "",
+          initialContent: getInnerText(window.document.body, contentId),
         }),
       )}
     >

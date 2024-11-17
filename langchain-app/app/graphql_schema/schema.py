@@ -42,17 +42,14 @@ class Mutation:
         return f"Model {model_name} downloaded successfully"
 
     @strawberry.mutation
-    async def start_conversation(self, conv_id: str, model: str, adapter: AdapterEnum,
-                                 initial_context: str) -> Conversation:
+    async def start_conversation(self, conv_id: str, model: str,
+                                 adapter: AdapterEnum, initial_context: str) -> Conversation:
         if conv_id in conversations:
             raise ValueError("Conversation ID already exists")
         conversation = Conversation(id=conv_id, messages=[],
-                                    model=model, adapter=adapter)
+                                    model=model, adapter=adapter,
+                                    initial_content=initial_content)
         conversations[conv_id] = conversation
-
-        await MessagesService().add_message(conversation=conversation,
-                                            query=PromptInput(prompt=initial_context, role="web_page",
-                                                              model=model, adapter=adapter))
         return conversation
 
     @strawberry.mutation

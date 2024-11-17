@@ -9,7 +9,6 @@ import useCurrentConversation from "../providers/CurrentConversationProvider/use
 
 export const useCreateConversation = () => {
   const [loading, setLoading] = useState(false);
-  const [addMessageLoading, setAddMessageLoading] = useState(false);
   const [createConversation] = useMutation<useCreateConversationMutation>(
     graphql`
       mutation useCreateConversationMutation(
@@ -27,6 +26,7 @@ export const useCreateConversation = () => {
           id
           model
           adapter
+          initialContent
           messages {
             id
             content

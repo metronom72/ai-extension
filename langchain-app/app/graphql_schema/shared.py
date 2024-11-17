@@ -33,6 +33,7 @@ class Conversation(Node):
     messages: List[Message]
     model: str
     adapter: AdapterEnum
+    initial_content: str
 
 
 @strawberry.type

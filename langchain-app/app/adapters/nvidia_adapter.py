@@ -302,7 +302,7 @@ class NvidiaAdapter:
             payload["messages"] = messages
         else:
             payload["prompt"] = " ".join([message["content"] for message in messages])
- 
+
         if response_format:
             payload["response_format"] = response_format
         return payload
@@ -310,9 +310,9 @@ class NvidiaAdapter:
     async def models(self) -> List[str]:
         return list(self.model_dict().keys())
 
-    async def generate_response(self, model: str, messages: List[Message],
-                                stream: bool = False,
-                                response_format: str = None) -> HTTPStatusError | RequestError | dict:
+    async def generate_chat_response(self, model: str, messages: List[Message],
+                                     stream: bool = False,
+                                     response_format: str = None) -> HTTPStatusError | RequestError | dict:
         model_dict = self.model_dict()[model]
         print(f"model object is {json.dumps(model_dict, indent=2)}")
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3e25f6d81e306fe6dc08a52c8ea48a36>>
+ * @generated SignedSource<<6c1654d260cfb99ec663e6e0be74e76c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,6 +20,7 @@ export type useCreateConversationMutation$data = {
   readonly startConversation: {
     readonly adapter: AdapterEnum;
     readonly id: any;
+    readonly initialContent: string;
     readonly messages: ReadonlyArray<{
       readonly content: string;
       readonly id: any;
@@ -108,6 +109,13 @@ v5 = [
       {
         "alias": null,
         "args": null,
+        "kind": "ScalarField",
+        "name": "initialContent",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
         "concreteType": "Message",
         "kind": "LinkedField",
         "name": "messages",
@@ -156,16 +164,16 @@ return {
     "selections": (v5/*: any*/)
   },
   "params": {
-    "cacheID": "363a8094289a792efcd5cb05dd305d5d",
+    "cacheID": "9017fe215d34701725804d39432a6446",
     "id": null,
     "metadata": {},
     "name": "useCreateConversationMutation",
     "operationKind": "mutation",
-    "text": "mutation useCreateConversationMutation(\n  $conversationId: String!\n  $model: String!\n  $adapter: AdapterEnum!\n  $initialContent: String!\n) {\n  startConversation(convId: $conversationId, model: $model, adapter: $adapter, initialContext: $initialContent) {\n    id\n    model\n    adapter\n    messages {\n      id\n      content\n    }\n  }\n}\n"
+    "text": "mutation useCreateConversationMutation(\n  $conversationId: String!\n  $model: String!\n  $adapter: AdapterEnum!\n  $initialContent: String!\n) {\n  startConversation(convId: $conversationId, model: $model, adapter: $adapter, initialContext: $initialContent) {\n    id\n    model\n    adapter\n    initialContent\n    messages {\n      id\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5de76a918f16e22514ac794894d4a053";
+(node as any).hash = "2bf465e67d5f0c86e884a3afa8e3e693";
 
 export default node;

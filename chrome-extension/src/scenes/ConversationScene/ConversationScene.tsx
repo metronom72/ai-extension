@@ -35,6 +35,8 @@ const ConversationScene = ({
     `,
     query.conversation,
   );
+
+  console.log(data);
   return <div />;
 };
 

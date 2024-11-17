@@ -9,6 +9,7 @@ type Conversation implements Node {
   messages: [Message!]!
   model: String!
   adapter: AdapterEnum!
+  initialContent: String!
 }
 
 """
