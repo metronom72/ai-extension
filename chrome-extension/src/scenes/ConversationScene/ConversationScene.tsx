@@ -5,7 +5,7 @@ import { ConversationScene_Query } from "./__generated__/ConversationScene_Query
 import useCurrentConversation from "../../providers/CurrentConversationProvider/useCurrentConversation";
 
 const Query = graphql`
-  query ConversationScene_Query($conversationId: ID!) {
+  query ConversationScene_Query($conversationId: GlobalID!) {
     conversation(id: $conversationId) {
       ...ConversationScene_ConversationFragment
     }
@@ -36,7 +36,6 @@ const ConversationScene = ({
     query.conversation,
   );
 
-  console.log(data);
   return <div />;
 };
 

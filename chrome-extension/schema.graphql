@@ -51,6 +51,6 @@ input PromptInput {
 
 type Query {
   models(adapter: AdapterEnum = null): [Model!]!
-  conversation(id: ID!): Conversation
+  conversation(id: GlobalID!): Conversation
   conversations: [Conversation!]!
 }

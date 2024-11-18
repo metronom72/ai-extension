@@ -24,8 +24,11 @@ class Query:
             return models_list
 
     @strawberry.field
-    def conversation(self, id: strawberry.ID) -> Optional[Conversation]:
-        return conversations.get(id)
+    def conversation(self, id: strawberry.relay.GlobalID) -> Optional[Conversation]:
+        if id.type_name == 'Conversation':
+            return conversations.get(id.node_id)
+        else:
+            return None
 
     @strawberry.field
     def conversations(self) -> List[Conversation]:

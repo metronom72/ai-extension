@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5b2ffc01aa5f226215a765cb6e6fa9a7>>
+ * @generated SignedSource<<75a32e62161f02b80fb8156c0dfa4665>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { ConcreteRequest } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type ConversationScene_Query$variables = {
-  conversationId: string;
+  conversationId: any;
 };
 export type ConversationScene_Query$data = {
   readonly conversation: {
@@ -124,16 +124,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b3d72d9004f6e88010767b86eb8c5125",
+    "cacheID": "97c5995eb167f7f9fb6faa06f455f30b",
     "id": null,
     "metadata": {},
     "name": "ConversationScene_Query",
     "operationKind": "query",
-    "text": "query ConversationScene_Query(\n  $conversationId: ID!\n) {\n  conversation(id: $conversationId) {\n    ...ConversationScene_ConversationFragment\n  }\n}\n\nfragment ConversationScene_ConversationFragment on Conversation {\n  id\n  model\n  adapter\n  messages {\n    content\n  }\n}\n"
+    "text": "query ConversationScene_Query(\n  $conversationId: GlobalID!\n) {\n  conversation(id: $conversationId) {\n    ...ConversationScene_ConversationFragment\n  }\n}\n\nfragment ConversationScene_ConversationFragment on Conversation {\n  id\n  model\n  adapter\n  messages {\n    content\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "54bdce5585233e9e1c49040e15ae77bd";
+(node as any).hash = "775f0072633d49d7ce4a3d7ee37f9a34";
 
 export default node;
