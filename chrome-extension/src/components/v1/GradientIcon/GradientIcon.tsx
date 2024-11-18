@@ -1,4 +1,4 @@
-import React, { cloneElement, memo, ReactElement, useId } from "react";
+import { cloneElement, memo, ReactElement, useId } from "react";
 
 const GradientIcon = ({ children }: { children: ReactElement }) => {
   const id = useId();

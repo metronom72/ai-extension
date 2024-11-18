@@ -2,7 +2,7 @@ import useSidebarState from "../providers/SidebarStateProvider/useSidebarState";
 import { Stack } from "@mui/joy";
 import { sidebarWidth } from "../content";
 import ContentAppSidebar from "components/shared/ContentSidebar";
-import React, { memo } from "react";
+import { memo } from "react";
 import InitialScene from "scenes/InitialScene";
 import useCurrentConversation from "../providers/CurrentConversationProvider/useCurrentConversation";
 import ConversationScene from "scenes/ConversationScene";

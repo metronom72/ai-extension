@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography } from "@mui/joy";
 import Summarize from "@mui/icons-material/Summarize";
 import Timer from "@mui/icons-material/Timer";

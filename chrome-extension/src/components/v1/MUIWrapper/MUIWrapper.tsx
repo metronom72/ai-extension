@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import "@fontsource/inter";
 import theme from "components/theme";

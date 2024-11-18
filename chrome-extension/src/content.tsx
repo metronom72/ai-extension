@@ -1,4 +1,3 @@
-import React from "react";
 import { createRoot } from "react-dom/client";
 import ContentApp from "./ContentApp";
 
@@ -17,7 +16,7 @@ export function setContent() {
 
   appContainer.style.right = "0px";
 
-  appContainer.style.zIndex = "1000";
+  appContainer.style.zIndex = "999999999999999";
 }
 
 export function setOpenedSidebar() {

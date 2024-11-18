@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<537526c93cc44403d9abec6561c8e38b>>
+ * @generated SignedSource<<f2cc55403ae9c3737d62d821b9a5a169>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,8 +14,11 @@ import { FragmentRefs } from "relay-runtime";
 export type ConversationScene_ConversationFragment$data = {
   readonly adapter: AdapterEnum;
   readonly id: any;
+  readonly initialContent: string;
   readonly messages: ReadonlyArray<{
     readonly content: string;
+    readonly id: any;
+    readonly role: string;
   }>;
   readonly model: string;
   readonly " $fragmentType": "ConversationScene_ConversationFragment";
@@ -25,19 +28,21 @@ export type ConversationScene_ConversationFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"ConversationScene_ConversationFragment">;
 };
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "ConversationScene_ConversationFragment",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
+    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -55,11 +60,26 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "initialContent",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "Message",
       "kind": "LinkedField",
       "name": "messages",
       "plural": true,
       "selections": [
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "role",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -74,7 +94,8 @@ const node: ReaderFragment = {
   "type": "Conversation",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "f6c3db73e4b7fa29fc309f1e3fcf7903";
+(node as any).hash = "beee82a9759fb515ab418340f039e23d";
 
 export default node;

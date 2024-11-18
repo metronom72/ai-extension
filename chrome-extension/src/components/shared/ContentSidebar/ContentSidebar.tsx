@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { Avatar, IconButton, Stack, Tooltip, Typography } from "@mui/joy";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import CloseOutlined from "@mui/icons-material/CloseOutlined";

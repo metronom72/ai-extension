@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<75a32e62161f02b80fb8156c0dfa4665>>
+ * @generated SignedSource<<fda62e88c6a3afe2639b0835e646e3d7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,7 @@ export type ConversationScene_Query$data = {
   readonly conversation: {
     readonly " $fragmentSpreads": FragmentRefs<"ConversationScene_ConversationFragment">;
   } | null | undefined;
+  readonly " $fragmentSpreads": FragmentRefs<"ContentForm_modelsFragment">;
 };
 export type ConversationScene_Query = {
   response: ConversationScene_Query$data;
@@ -37,7 +38,28 @@ v1 = [
     "name": "id",
     "variableName": "conversationId"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "model",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "adapter",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -60,6 +82,11 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "ContentForm_modelsFragment"
       }
     ],
     "type": "Query",
@@ -79,25 +106,14 @@ return {
         "name": "conversation",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "model",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "adapter",
+            "name": "initialContent",
             "storageKey": null
           },
           {
@@ -108,6 +124,14 @@ return {
             "name": "messages",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "role",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -120,20 +144,33 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "Model",
+        "kind": "LinkedField",
+        "name": "models",
+        "plural": true,
+        "selections": [
+          (v3/*: any*/),
+          (v4/*: any*/)
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "97c5995eb167f7f9fb6faa06f455f30b",
+    "cacheID": "941c546097d50f0ed8fcb5204c5e60ad",
     "id": null,
     "metadata": {},
     "name": "ConversationScene_Query",
     "operationKind": "query",
-    "text": "query ConversationScene_Query(\n  $conversationId: GlobalID!\n) {\n  conversation(id: $conversationId) {\n    ...ConversationScene_ConversationFragment\n  }\n}\n\nfragment ConversationScene_ConversationFragment on Conversation {\n  id\n  model\n  adapter\n  messages {\n    content\n  }\n}\n"
+    "text": "query ConversationScene_Query(\n  $conversationId: GlobalID!\n) {\n  conversation(id: $conversationId) {\n    ...ConversationScene_ConversationFragment\n  }\n  ...ContentForm_modelsFragment\n}\n\nfragment ContentForm_modelsFragment on Query {\n  models {\n    model\n    adapter\n  }\n}\n\nfragment ConversationScene_ConversationFragment on Conversation {\n  id\n  model\n  adapter\n  initialContent\n  messages {\n    id\n    role\n    content\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "775f0072633d49d7ce4a3d7ee37f9a34";
+(node as any).hash = "6ed8a74615cec837c5e202f46e186df9";
 
 export default node;

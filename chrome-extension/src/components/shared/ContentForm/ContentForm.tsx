@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import {
   Box,
   Divider,
@@ -42,6 +42,7 @@ const ContentForm = ({
     formState: { errors },
     getValues,
     setValue,
+    register,
   } = useForm<IFormInput>({});
   const values = getValues();
   const { models } = useFragment(
@@ -55,20 +56,25 @@ const ContentForm = ({
     `,
     queryFragmentRef,
   );
-  const { mutate: createConversation, loading } = useCreateConversation();
+  const { mutate: createConversation } = useCreateConversation();
+  register("message", { required: true });
+
+  register("model", { required: true });
+
+  register("adapter", { required: true });
 
   return (
     <Box
       p={2}
       component="form"
-      onSubmit={handleSubmit((data) =>
+      onSubmit={handleSubmit((data) => {
         createConversation({
           conversationId: v4(),
           model: data.model,
           adapter: data.adapter,
           initialContent: getInnerText(window.document.body, contentId),
-        }),
-      )}
+        });
+      })}
     >
       <Sheet
         variant="outlined"
@@ -95,7 +101,11 @@ const ContentForm = ({
                 }}
                 value={values.message}
                 maxRows={6}
-                onChange={(event) => setValue("message", event.target.value)}
+                onChange={(event) => {
+                  setValue("message", event.target.value, {
+                    shouldValidate: true,
+                  });
+                }}
               />
               {errors.message?.message && (
                 <FormHelperText>{errors.message?.message}</FormHelperText>
@@ -127,13 +137,15 @@ const ContentForm = ({
                     }}
                     onChange={(_, value) => {
                       if (value) {
-                        setValue("model", value);
+                        setValue("model", value, { shouldValidate: true });
 
                         const targetModel = models.find(
                           ({ model }) => model === value,
                         );
                         if (targetModel) {
-                          setValue("adapter", targetModel.adapter);
+                          setValue("adapter", targetModel.adapter, {
+                            shouldValidate: true,
+                          });
                         }
                       }
                     }}
