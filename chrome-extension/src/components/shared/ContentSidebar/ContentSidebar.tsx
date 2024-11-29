@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 import { Avatar, IconButton, Stack, Tooltip, Typography } from "@mui/joy";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import CloseOutlined from "@mui/icons-material/CloseOutlined";
@@ -9,8 +9,11 @@ import HandymanOutlinedIcon from "@mui/icons-material/HandymanOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import useSidebarState from "providers/SidebarStateProvider/useSidebarState";
 
-const ContentAppSidebar: React.FC = () => {
+const ContentSidebar: React.FC = () => {
+  const { toggleOpen } = useSidebarState();
+
   return (
     <Stack>
       <Stack direction="row" spacing={1} useFlexGap>
@@ -20,7 +23,7 @@ const ContentAppSidebar: React.FC = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Close Sidebar">
-          <IconButton size="sm">
+          <IconButton size="sm" onClick={toggleOpen}>
             <CloseOutlined />
           </IconButton>
         </Tooltip>
@@ -63,7 +66,7 @@ const ContentAppSidebar: React.FC = () => {
           </Stack>
         </Stack>
 
-        <Stack spacing={1} useFlexGap alignItems="center">
+        <Stack spacing={1} useFlexGap alignItems="center" pb={2}>
           <Stack alignItems="center">
             <IconButton size="md">
               <SettingsOutlinedIcon />
@@ -83,4 +86,4 @@ const ContentAppSidebar: React.FC = () => {
   );
 };
 
-export default memo(ContentAppSidebar);
+export default memo(ContentSidebar);
